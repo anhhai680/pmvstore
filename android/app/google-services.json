@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "828855316430",
+    "firebase_url": "https://pmv-store.firebaseio.com",
+    "project_id": "pmv-store",
+    "storage_bucket": "pmv-store.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:828855316430:android:766c5f1c72c5bafd",
+        "android_client_info": {
+          "package_name": "com.vn.phanmemvang.pmvstore"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "828855316430-odnrkq996scpdbvbo754cujuu2sc9l9r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.vn.phanmemvang.pmvstore",
+            "certificate_hash": "2a49a2990a76753c466945f92634de65d51e57cd"
+          }
+        },
+        {
+          "client_id": "828855316430-4vtas75q51nqp0e8dt7jjnujno61kbsv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCeG9W8a116-weR037ILPr1gQKsKzMi52k"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "828855316430-4vtas75q51nqp0e8dt7jjnujno61kbsv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

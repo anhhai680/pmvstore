@@ -1,0 +1,44 @@
+{
+	"name": "pmvstore",
+	"version": "0.0.1",
+	"private": true,
+	"scripts": {
+		"start": "node node_modules/react-native/local-cli/cli.js start",
+		"test": "jest"
+	},
+	"dependencies": {
+		"crypto-js": "^3.1.9-1",
+		"native-base": "^2.3.5",
+		"oauth-1.0a": "^2.2.3",
+		"prop-types": "^15.6.1",
+		"react": "16.0.0",
+		"react-native": "0.50.3",
+		"react-native-fbsdk": "^0.7.0",
+		"react-native-firebase": "^4.3.7",
+		"react-native-material-dropdown": "^0.11.1",
+		"react-native-render-html": "^3.7.0",
+		"react-native-swipeout": "^2.3.4",
+		"react-native-swiper": "^1.5.13",
+		"react-navigation": "^1.5.12",
+		"react-navigation-redux-helpers": "^1.0.5",
+		"react-number-format": "^3.5.1",
+		"react-redux": "^5.0.7",
+		"redux": "^3.7.2",
+		"redux-thunk": "^2.2.0",
+		"tcomb-form-native": "^0.6.11"
+	},
+	"devDependencies": {
+		"babel-jest": "23.4.0",
+		"babel-preset-react-native": "4.0.0",
+		"jest": "23.4.1",
+		"lodash": "^4.17.10",
+		"react-test-renderer": "16.0.0",
+		"reactotron-react-native": "^1.14.0",
+		"reactotron-redux": "^1.13.0",
+		"redux-devtools-extension": "^2.13.5",
+		"redux-logger": "^3.0.6"
+	},
+	"jest": {
+		"preset": "react-native"
+	}
+}
