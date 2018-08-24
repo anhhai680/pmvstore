@@ -6,6 +6,7 @@ import { Container, Header, Body, Left, Content, Text, Button, Card, CardItem, I
 import BannerSlider from './Banner';
 import { ProductList, ProductGrid } from '../components/product';
 import { getProducts, productsRefreshing } from '../redux/actions/homeAction';
+import { fetchingCartItem } from '../redux/actions/cartAction';
 
 
 class Home extends Component {
@@ -26,6 +27,7 @@ class Home extends Component {
         this.renderFeatureProducts();
         this.renderProductList();
         this.renderBestSellProducts();
+        this.props.fetchingCartItem();
     }
 
     componentDidUpdate(prevProps) {
@@ -173,7 +175,8 @@ const mapStateToProps = state => ({
 
 const mapActionToState = {
     getProducts,
-    productsRefreshing
+    productsRefreshing,
+    fetchingCartItem
 };
 
 export default connect(mapStateToProps, mapActionToState)(Home);

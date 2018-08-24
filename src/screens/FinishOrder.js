@@ -24,7 +24,7 @@ class FinishOrder extends Component {
 
     componentDidMount() {
         if (Platform.OS == 'android') {
-            BackHandler.addEventListener('hardwareBackPress', function () {
+            BackHandler.addEventListener('hardwareBackPress', () => {
                 // this.onMainScreen and this.goBack are just examples, you need to use your own implementation here
                 // Typically you would use the navigator here to go to the last state.
                 if (this.props.navigation.state.routeName === 'Checkout') {
@@ -33,6 +33,13 @@ class FinishOrder extends Component {
                 }
                 return false;
             });
+            // BackHandler.addEventListener('hardwareBackPress', () => 
+            // { 
+            //     const { dispatch } = this.props;
+            //     this.props.successPayment();
+            //     dispatch({ type: 'Navigation/BACK' });
+            //     return true
+            // });
         }
     }
 
