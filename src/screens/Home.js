@@ -27,7 +27,12 @@ class Home extends Component {
         this.renderFeatureProducts();
         this.renderProductList();
         this.renderBestSellProducts();
-        this.props.fetchingCartItem();
+        this.getCartItems();
+    }
+
+    getCartItems = async () => {
+        //Fetching cart item in local Storage
+        await this.props.fetchingCartItem();
     }
 
     componentDidUpdate(prevProps) {

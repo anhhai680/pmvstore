@@ -40,7 +40,7 @@ export const OrderStack = StackNavigator(
 
 
 export const Main = StackNavigator({
-    Home: {
+    HomeTab: {
         screen: TabNavigator(
             {
                 MainTab: {
@@ -164,7 +164,7 @@ class AppWithNavigationState extends Component {
         const { dispatch, nav } = this.props;
         if (nav.routes.length === 1
             && (nav.routes[0].routes[0].index === 0
-                && nav.routes[0].routes[0].routeName === 'Home')) {
+                && nav.routes[0].routeName === 'Home')) {
             Alert.alert(
                 'Thoát ứng dụng',
                 'Bạn có thực sự muốn thoát ?',

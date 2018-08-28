@@ -80,15 +80,12 @@ export default (state = initialState, action) => {
         //   break;
         // }
         case SUCCESS_PAYMENT:
-            //const homeKey = state.routes[state.index].routes[0].key;
             nextState = AppNavigator.router.getStateForAction(
                 NavigationActions.reset({
                     index: 0,
                     key: null,
                     actions: [
-                        //NavigationActions.navigate({ key: 'Main', routeName: 'Main' })
-                        NavigationActions.navigate({ routeName: 'Home' })
-                        //NavigationActions.init()
+                        NavigationActions.navigate({ routeName: 'Home' }),
                     ]
                 }), state
             );
