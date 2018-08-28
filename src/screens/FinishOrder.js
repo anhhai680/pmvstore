@@ -22,30 +22,25 @@ class FinishOrder extends Component {
         this.onSuccessPayment = this.onSuccessPayment.bind(this);
     }
 
-    componentDidMount() {
+    componentWillMount() {
         if (Platform.OS == 'android') {
-            BackHandler.addEventListener('hardwareBackPress', () => {
-                // this.onMainScreen and this.goBack are just examples, you need to use your own implementation here
-                // Typically you would use the navigator here to go to the last state.
-                if (this.props.navigation.state.routeName === 'Checkout') {
-                    this.props.successPayment();
-                    return true;
-                }
-                return false;
-            });
-            // BackHandler.addEventListener('hardwareBackPress', () => 
-            // { 
-            //     const { dispatch } = this.props;
-            //     this.props.successPayment();
-            //     dispatch({ type: 'Navigation/BACK' });
-            //     return true
-            // });
+            BackHandler.addEventListener('hardwareBackPressToHome', this.backPress);
         }
     }
 
     componentWillUnmount() {
-        //this.props.successPayment();
-        BackHandler.removeEventListener('hardwareBackPress');
+        if (Platform.OS == 'android') {
+            BackHandler.removeEventListener('hardwareBackPressToHome', this.backPress);
+        }
+    }
+
+    backPress = () => {
+        // this.onMainScreen and this.goBack are just examples, you need to use your own implementation here
+        // Typically you would use the navigator here to go to the last state.
+        if (this.props.navigation.state.routeName === 'FinishOrder') {
+            this.onSuccessPayment();
+        }
+        return true;
     }
 
     renderOrderInfos = (order) => {
