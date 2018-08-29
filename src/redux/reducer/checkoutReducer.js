@@ -2,7 +2,9 @@ import {
     LOAD_ALL_CITY,
     UPDATE_SELECTED_CITY,
     SAVE_CUSTOMER_INFO,
-    LOAD_CUSTOMER_INFO
+    LOAD_CUSTOMER_INFO,
+    FETCH_CUSTOMER,
+    UNFETCH_CUSTOMER
 } from "../constants/actionTypes";
 
 const INITIAL_STATE = {
@@ -71,7 +73,8 @@ const INITIAL_STATE = {
         'PY': 'Phú Yên'
     },
     selectedCity: 'HCM',
-    customerInfo: null
+    customerInfo: null,
+    loading: true
 };
 
 
@@ -79,6 +82,13 @@ export default checkoutReducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
         case LOAD_ALL_CITY:
             return { ...state }
+        case FETCH_CUSTOMER:
+            return { ...state }
+        case UNFETCH_CUSTOMER:
+            return {
+                ...state,
+                loading: false
+            }
         case SAVE_CUSTOMER_INFO:
             return Object.assign(
                 {},
@@ -92,10 +102,11 @@ export default checkoutReducer = (state = INITIAL_STATE, action) => {
                 {},
                 state,
                 {
+                    loading: false,
                     customerInfo: action.payload
                 }
             )
         default:
-            return { ...state };
+            return { ...state }
     }
 }

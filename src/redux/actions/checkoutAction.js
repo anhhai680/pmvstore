@@ -3,7 +3,9 @@ import {
     LOAD_ALL_CITY,
     UPDATE_SELECTED_CITY,
     SAVE_CUSTOMER_INFO,
-    LOAD_CUSTOMER_INFO
+    LOAD_CUSTOMER_INFO,
+    FETCH_CUSTOMER,
+    UNFETCH_CUSTOMER
 } from '../constants/actionTypes';
 
 const arrCities = [
@@ -99,11 +101,18 @@ export const saveCustomerInfo = (cusInfo) => async (dispatch) => {
 
 export const loadCustomerInfo = () => async (dispatch) => {
     try {
+        dispatch({
+            type: FETCH_CUSTOMER
+        })
         await AsyncStorage.getItem('CustomerInfo', (error, result) => {
             if (result) {
                 dispatch({
                     type: LOAD_CUSTOMER_INFO,
                     payload: JSON.parse(result)
+                })
+            } else if (result === null) {
+                dispatch({
+                    type: UNFETCH_CUSTOMER
                 })
             } else if (error) {
                 console.error(error);

@@ -20,7 +20,11 @@ class Checkout extends Component {
 
     componentDidMount() {
         this.props.loadCities();
-        this.props.loadCustomerInfo();
+        this.loadCustomerInfo();
+    }
+
+    loadCustomerInfo = async () => {
+        await this.props.loadCustomerInfo();
     }
 
     componentDidUpdate(prevProps) {
@@ -64,6 +68,13 @@ class Checkout extends Component {
     }
 
     render() {
+        if (this.props.loading) {
+            return (
+                <View style={{ flex: 1, marginTop: 100, justifyContent: 'center', alignItems: 'center' }}>
+                    <ActivityIndicator style={{ alignItems: 'center' }} size="large" />
+                </View>
+            )
+        }
         return (
             <Container>
                 <Header>
@@ -124,7 +135,8 @@ const mapStateToProps = (state) => ({
     arrCities: state.checkout.arrCities,
     selectedCity: state.checkout.selectedCity,
     totalPrice: state.cart.totalPrice,
-    customerInfo: state.checkout.customerInfo
+    customerInfo: state.checkout.customerInfo,
+    loading: state.checkout.loading
 });
 
 const mapActionsToProps = {
