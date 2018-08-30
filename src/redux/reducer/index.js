@@ -7,6 +7,7 @@ import nav from './navReducer';
 import checkout from './checkoutReducer';
 import attribute from './attributeReducer';
 import notify from "./notifyReducer";
+import banner from "./bannerReducer";
 
 
 export default combineReducers({
@@ -17,5 +18,6 @@ export default combineReducers({
     order,
     checkout,
     attribute,
-    notify
+    notify,
+    banner
 });

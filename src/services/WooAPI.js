@@ -1,3 +1,4 @@
+import axios from "axios";
 import WooCommerceAPI from './WooCommerceAPI';
 import { Config, Constants } from "../common/Index";
 
@@ -221,5 +222,31 @@ export const WooAPI = {
     catch (err) {
       console.error(err);
     }
+  },
+  getBannerSlider: () => {
+    // const urlRequest = 'http://shop.phanmemvang.com.vn/wp-json/ms/v1/slider';
+    // return fetch(urlRequest)
+    //   .then((response) => response.json())
+    //   .then((responseJson) => {
+    //     return responseJson.data;
+    //   })
+    //   .catch((error) => console.error(error));
+    const axiosConfig = axios.create({
+      baseURL: 'http://shop.phanmemvang.com.vn/wp-json/ms/v1',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    return axiosConfig.get('/slider')
+      .then(function (response) {
+        if (response.status === 200)
+          return response.data;
+        else
+          throw new Error(response.statusText);
+      })
+      .catch(function (error) {
+        console.error(error);
+      });
   }
 };

@@ -5,6 +5,8 @@ import {
     HOME_PRODUCTS_FAILURE,
     HOME_PRODUCTS_REFRESHING
 } from '../constants/actionTypes';
+
+
 export const getProducts = ({ pageSize, pageIndex }) => async (dispatch) => {
     dispatch({ type: HOME_PRODUCTS_REQUEST });
     try {
@@ -43,4 +45,4 @@ export const getProducts = ({ pageSize, pageIndex }) => async (dispatch) => {
 
 export const productsRefreshing = ({ pageSize, pageIndex }) => (dispatch) => {
     dispatch(getProducts({ pageSize, pageIndex }));
-}
+};
