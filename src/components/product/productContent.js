@@ -1,17 +1,54 @@
 import React, { PureComponent } from 'react';
-import { StyleSheet, Dimensions } from 'react-native';
-import {Body, Card, CardItem} from 'native-base';
+import { Dimensions, Image, View } from 'react-native';
+import { Body, Card, CardItem } from 'native-base';
 import HTML from 'react-native-render-html';
 
+export default class ProductContent extends PureComponent {
 
-const _width = Dimensions.get("window").width;
-export default class ProductContent extends PureComponent{
-    render(){
+    constructor(props) {
+        super(props);
+        this.state = {
+            _widthScreen: Dimensions.get('screen').width,
+            _scaleScreen: Dimensions.get('screen').scale
+        };
+    }
+
+    componentDidMount() {
+        Dimensions.addEventListener('change', this.rotateDevice)
+    }
+
+    componentWillUnmount() {
+        Dimensions.removeEventListener('change', this.rotateDevice)
+    }
+
+    rotateDevice = (event) => {
+        this.setState({
+            _widthScreen: Dimensions.get('screen').width - 30
+        })
+    }
+
+    render() {
         return (
             <Card>
                 <CardItem>
                     <Body>
-                        <HTML html={this.props.content} height={_width/2} />
+                        <HTML html={this.props.content}
+                            tagsStyles={tagsStyles}
+                            renderers={{
+                                img: (htmlAttribs) => {
+                                    return (
+                                        <View style={{ alignItems: 'center' }}>
+                                            <Image source={{ uri: htmlAttribs.src }}
+                                                style={{
+                                                    width: this.state._widthScreen - 30,
+                                                    height: (this.state._widthScreen / this.state._scaleScreen) + 50
+                                                }}
+                                                resizeMode={'contain'} />
+                                        </View>
+                                    )
+                                }
+                            }}
+                        />
                     </Body>
                 </CardItem>
             </Card>
@@ -19,20 +56,15 @@ export default class ProductContent extends PureComponent{
     }
 }
 
-const styles = StyleSheet.create({
+export const tagsStyles = {
     a: {
         fontWeight: '300',
-        color: '#FF3366', // make links coloured pink
+        color: '#ff3366', // make links coloured pink
     },
-    p: {
-        fontSize: 13,
-        color: "#666",
+    ul: {
+        marginBottom: 1
     },
-    img:{
-        justifyContent: "center",
-        alignItems: "center",
-        height: 200,
-        margin:20,
-        padding:20
+    strong: {
+        marginTop: 10
     }
-});
+};
