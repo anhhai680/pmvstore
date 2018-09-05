@@ -2,22 +2,46 @@ import React, { Component } from 'react';
 import { StyleSheet, View, Image, Dimensions } from 'react-native';
 import Swiper from 'react-native-swiper';
 
-const screenWidth = Dimensions.get("window").width;
 export default class ProductSwiper extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            _widthScreen: Dimensions.get('screen').width,
+            _scaleScreen: Dimensions.get('screen').scale
+        };
+    }
+
+    componentDidMount() {
+        Dimensions.addEventListener('change', this.rotateDevice)
+    }
+
+    componentWillUnmount() {
+        Dimensions.removeEventListener('change', this.rotateDevice)
+    }
+
+    rotateDevice = () => {
+        this.setState({
+            _widthScreen: Dimensions.get('screen').width - 35
+        })
+    }
+
     render() {
         const { images } = this.props;
         return (
-            <Swiper 
+            <Swiper
                 style={styles.product_swiper}
                 showsButtons={false}
+                height={this.state._widthScreen / this.state._scaleScreen}
                 showsPagination={true}
                 autoplay={__DEV__ ? false : true}
-                width={screenWidth}
                 loop={true}
                 removeClippedSubviews={false}>
                 {images.map((item, index) => {
                     return (
-                        <Image key={index} source={{ uri: item.src }} style={styles.product_image} />
+                        <Image key={index} source={{ uri: item.src }}
+                            style={styles.product_image}
+                            width={this.state._widthScreen - 35} />
                     )
                 })}
             </Swiper>
@@ -29,15 +53,11 @@ var styles = StyleSheet.create({
     product_swiper: {
         flex: 1,
         alignItems: "center",
-        justifyContent: "center",
-        height: screenWidth >= 480 ? 300 : 200,
-        width: screenWidth,
+        justifyContent: "center"
     },
     product_image: {
         flex: 1,
-        width: screenWidth,
-        height: screenWidth >= 480 ? 300 : 200,
-        resizeMode: "cover",
+        resizeMode: "contain",
         justifyContent: 'center',
         alignItems: 'center'
     }

@@ -40,10 +40,10 @@ export default class ProductContent extends PureComponent {
                                         <View style={{ alignItems: 'center' }}>
                                             <Image source={{ uri: htmlAttribs.src }}
                                                 style={{
+                                                    resizeMode: 'contain',
                                                     width: this.state._widthScreen - 30,
                                                     height: (this.state._widthScreen / this.state._scaleScreen) + 50
-                                                }}
-                                                resizeMode={'contain'} />
+                                                }} />
                                         </View>
                                     )
                                 }
