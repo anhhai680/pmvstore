@@ -13,8 +13,6 @@ import { addCartItem } from '../redux/actions/cartAction';
 import { getProductAttributeTerms, getProductVariations } from '../redux/actions/productAction';
 import { navigateToOrder } from '../redux/actions/navAction';
 
-
-const _width = Dimensions.get('window').width;
 class Product extends Component {
 
     static navigationOptions = ({ navigation }) => {
@@ -311,8 +309,8 @@ class Product extends Component {
             );
         }
         return (
-            <Container>
-                <Content>
+            <Container >
+                <Content style={{ marginBottom: 50 }}>
                     <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                         <Modal
                             animationType='slide'
@@ -365,7 +363,7 @@ class Product extends Component {
                         <cart.quantityProduct value={this.state.quantity} quantityValueChange={this.quantityValueChange} />
                     </View>
                 </KeyboardAvoidingView> */}
-            </Container>
+            </ Container>
         );
     }
 }
