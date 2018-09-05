@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { StyleSheet, View, Text, Image, Animated, TouchableOpacity, Dimensions, TouchableWithoutFeedback } from "react-native";
 import NumberFormat from 'react-number-format';
 
-const screenWidth = Dimensions.get("window").width;
+const _screen = Dimensions.get("window");
 export default class ListItem extends Component {
     state = {
         fadeAnim: new Animated.Value(0), // Initial value for opacity: 0
@@ -31,7 +31,7 @@ export default class ListItem extends Component {
 
     render() {
         const { item, styles, numColumns, onPressItem } = this.props
-        const itemWidth = (screenWidth - (10 * numColumns)) / numColumns
+        const itemWidth = (_screen.width - (10 * numColumns)) / numColumns
         return (
             <View style={styles.item}>
                 <TouchableWithoutFeedback
@@ -40,7 +40,7 @@ export default class ListItem extends Component {
                     onPressOut={() => this.animatedOut()}
                 >
                     <Animated.View style={{
-                        margin: 5,
+                        alignItems: 'center',
                         opacity: this.state.fadeAnim,
                         transform: [{
                             scale: this.state.fadeAnim
@@ -53,8 +53,11 @@ export default class ListItem extends Component {
                     }}>
                         <Image
                             source={{ uri: item.images[0].src }}
-                            style={{ width: itemWidth, height: screenWidth >= 480 ? 350 : 200 }}
-                            resizeMode={numColumns > 1 ? 'contain' : 'cover'}
+                            style={{
+                                resizeMode: 'contain',
+                                width: itemWidth,
+                                height: numColumns > 1 ? _screen.width / _screen.scale : _screen.width - 150
+                            }}
                         />
                         <View>
                             <Text style={styles.itemText}>{item.name}</Text>
