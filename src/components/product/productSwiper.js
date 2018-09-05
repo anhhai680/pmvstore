@@ -7,24 +7,24 @@ export default class ProductSwiper extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            _widthScreen: Dimensions.get('screen').width,
+            _heightScreen: Dimensions.get('screen').height,
             _scaleScreen: Dimensions.get('screen').scale
         };
     }
 
-    componentDidMount() {
-        Dimensions.addEventListener('change', this.rotateDevice)
-    }
+    // componentDidMount() {
+    //     Dimensions.addEventListener('change', this.rotateDevice)
+    // }
 
-    componentWillUnmount() {
-        Dimensions.removeEventListener('change', this.rotateDevice)
-    }
+    // componentWillUnmount() {
+    //     Dimensions.removeEventListener('change', this.rotateDevice)
+    // }
 
-    rotateDevice = () => {
-        this.setState({
-            _widthScreen: Dimensions.get('screen').width - 35
-        })
-    }
+    // rotateDevice = () => {
+    //     this.setState({
+    //         _widthScreen: Dimensions.get('screen').width
+    //     })
+    // }
 
     render() {
         const { images } = this.props;
@@ -32,7 +32,7 @@ export default class ProductSwiper extends Component {
             <Swiper
                 style={styles.product_swiper}
                 showsButtons={false}
-                height={this.state._widthScreen / this.state._scaleScreen}
+                height={this.state._heightScreen / this.state._scaleScreen}
                 showsPagination={true}
                 autoplay={__DEV__ ? false : true}
                 loop={true}
@@ -40,8 +40,7 @@ export default class ProductSwiper extends Component {
                 {images.map((item, index) => {
                     return (
                         <Image key={index} source={{ uri: item.src }}
-                            style={styles.product_image}
-                            width={this.state._widthScreen - 35} />
+                            style={styles.product_image} />
                     )
                 })}
             </Swiper>
@@ -57,7 +56,7 @@ var styles = StyleSheet.create({
     },
     product_image: {
         flex: 1,
-        resizeMode: "contain",
+        resizeMode: 'contain',
         justifyContent: 'center',
         alignItems: 'center'
     }
