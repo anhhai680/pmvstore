@@ -309,7 +309,7 @@ class Product extends Component {
             );
         }
         return (
-            <Container >
+            <Container style={styles.container} >
                 <Content style={{ marginBottom: 50 }}>
                     <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                         <Modal
@@ -390,7 +390,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: "center",
-        justifyContent: "center",
+        justifyContent: "flex-end",
     },
     product_title: {
         fontSize: 14,
