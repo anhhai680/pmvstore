@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import { getbanner } from "../redux/actions/bannerAction";
 import FullWidthImage from "../components/FullWidthImage";
 
-const screenWidth = Dimensions.get('screen').width;
+const screen = Dimensions.get('screen');
 class Banner extends Component {
 
     constructor(props) {
@@ -80,27 +80,25 @@ const mapActionToProps = {
 
 export default connect(mapStateToProps, mapActionToProps)(Banner);
 
-
 var styles = StyleSheet.create({
     slider: {
-        width: screenWidth,
-        height: screenWidth / 2,
+        width: screen.width,
+        height: screen.width / screen.scale,
         justifyContent: "center",
         alignItems: 'center'
     },
     slider_item: {
         //flex: 1,
         //height: screenWidth >= 480 ? 250 : 150,
-        width: screenWidth,
-        height: screenWidth / 2,
+        // width: screenWidth,
+        // height: screenWidth / screenScale,
         justifyContent: "center",
         alignItems: 'center'
     },
     image: {
-        flex: 1,
         //aspectRatio: 1.5,
-        width: screenWidth,
-        height: screenWidth / 2,
+        // width: screenWidth,
+        // height: screenWidth / screenScale,
         resizeMode: 'cover',
         justifyContent: "center",
         alignItems: 'center'
