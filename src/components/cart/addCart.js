@@ -5,7 +5,7 @@ const _width = Dimensions.get('window').width;
 export default class addCart extends Component {
     render() {
         return (
-            <View style={{ alignItems: 'flex-start'}}>
+            <View style={styles.viewTouch}>
                 <TouchableOpacity
                     style={styles.orderButton}
                     onPress={() => this.props.addProductToCartItem(this.props.product)}
@@ -18,13 +18,19 @@ export default class addCart extends Component {
 }
 
 const styles = StyleSheet.create({
+    viewTouch: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderColor: '#015205',
+        borderWidth: 0.5,
+        position: 'absolute'
+    },
     orderButton: {
-        backgroundColor: '#018206',
+        flex: 1,
         height: 50,
-        width: _width,
+        backgroundColor: '#018206',
         justifyContent: 'center',
         alignItems: 'center',
-        position: 'absolute',
         bottom: 0,
         shadowColor: "#000000",
         shadowOpacity: 0.8,
@@ -34,8 +40,8 @@ const styles = StyleSheet.create({
             width: 0
         }
     },
-    orderText:{
-        fontSize: 16, 
+    orderText: {
+        fontSize: 16,
         fontWeight: 'bold',
         color: 'white',
     }

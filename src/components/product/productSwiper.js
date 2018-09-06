@@ -58,6 +58,7 @@ var styles = StyleSheet.create({
         flex: 1,
         resizeMode: 'contain',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        borderWidth: 1
     }
 });
