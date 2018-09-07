@@ -19,6 +19,9 @@ export const List = _List;
 import _Profile from './Profile';
 export const Profile = _Profile;
 
+import _Orders from './Orders';
+export const Orders = _Orders;
+
 import _Cart from './Cart';
 export const Cart = _Cart;
 
