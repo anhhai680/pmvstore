@@ -78,6 +78,28 @@ export const WooAPI = {
       console.error(e);
     }
   },
+  getOrderById: async (id) => {
+    try {
+      const response = await API.get('orders/' + id);
+      return response.json();
+    } catch (error) {
+      console.error(error);
+    }
+  },
+  getOrders: async (include, status) => {
+    try {
+      let params = {
+        page: 1,
+        per_page: 50,
+        include,
+        status
+      };
+      const response = await API.get('orders', params);
+      return response.json();
+    } catch (error) {
+      console.error(error);
+    }
+  },
   productsByTagId: async (tagId, per_page, page) => {
     try {
       const response = await API.get('products', {
