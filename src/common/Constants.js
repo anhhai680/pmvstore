@@ -91,7 +91,17 @@ const Constants = {
         'VP': 'Vĩnh Phúc',
         'YB': 'Yên Bái',
         'PY': 'Phú Yên'
-    }
+    },
+    statusOrder:{
+        'any': 'Tất cả',
+        'pending': 'Đang chờ xử lý',
+        'processing': 'Đang xử lý',
+        'on-hold': 'Đang chờ',
+        'completed': 'Hoàn tất',
+        'cancelled': 'Huỷ',
+        'refunded': 'Hoàn trả',
+        'failed': 'Thất bại'
+    },
 };
 
 export default Constants;

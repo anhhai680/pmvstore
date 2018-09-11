@@ -22,6 +22,9 @@ export const Profile = _Profile;
 import _Orders from './Orders';
 export const Orders = _Orders;
 
+import _OrderDetail from './OrderDetail';
+export const OrderDetail = _OrderDetail;
+
 import _Cart from './Cart';
 export const Cart = _Cart;
 
