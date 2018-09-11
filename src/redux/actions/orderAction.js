@@ -8,6 +8,9 @@ import {
     FETCH_PRODUCT_VARIATION_PENDING,
     FETCH_PRODUCT_VARIATION_SUCCESS,
     FETCH_PRODUCT_VARIATION_ERROR,
+    FETCH_ORDERS_SUCCESS,
+    FETCH_ORDERS_PENDING,
+    FETCH_ORDERS_ERROR,
     EMPTY_CART_ITEM
 } from '../constants/actionTypes';
 import { saveCustomerInfo } from './checkoutAction';
@@ -128,4 +131,39 @@ export const fetchProductVariations = (id) => async (dispatch) => {
         });
         console.error(error);
     }
+}
+
+export const fetchingOrders = (status) => (dispatch) => {
+    dispatch({ type: FETCH_ORDERS_PENDING });
+    WooAPI.getOrders(711, status)
+        .then((response) => {
+            if (response !== undefined) {
+                dispatch({
+                    type: FETCH_ORDERS_SUCCESS,
+                    payload: {
+                        data: response
+                    }
+                });
+            }
+            else {
+                dispatch({
+                    type: FETCH_ORDERS_ERROR,
+                    payload: {
+                        error: 'Cannot getting data from server.'
+                    }
+                });
+            }
+        })
+        .catch((error) => {
+            dispatch({
+                type: FETCH_ORDERS_ERROR,
+                payload: {
+                    error
+                }
+            });
+        });
+}
+
+export const filterStatusOrder = (statuskey) => (dispatch) => {
+    dispatch({ type: FETCH_ORDERS_PENDING });
 }

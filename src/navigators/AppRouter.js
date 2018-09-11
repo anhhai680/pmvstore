@@ -5,7 +5,7 @@ import { StackNavigator, TabNavigator, TabBarBottom, addNavigationHelpers, Navig
 import { connect } from "react-redux";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import { Home, About, Cart, Checkout, FinishOrder, Product, List, Notifications, Orders } from "../screens";
+import { Home, About, Cart, Checkout, FinishOrder, Product, List, Notifications, Orders, OrderDetail } from "../screens";
 import { addListener } from "../redux/ReduxNavigation";
 import IconBadge from "../components/IconBadge";
 
@@ -38,6 +38,26 @@ export const OrderStack = StackNavigator(
     }
 )
 
+export const ListOrder = StackNavigator({
+    Orders: {
+        screen: Orders,
+        navigationOptions: {
+            header: null,
+            //tabBarVisible: false
+        }
+    },
+    OrderDetail: {
+        screen: OrderDetail,
+        navigationOptions: {
+            header: null,
+            //tabBarVisible: false
+        }
+    }
+},
+    {
+        headerMode: 'none'
+    }
+)
 
 export const Main = StackNavigator({
     HomeTab: {
@@ -78,7 +98,7 @@ export const Main = StackNavigator({
                     },
                 },
                 ListOrderTab: {
-                    screen: Orders,
+                    screen: ListOrder,
                     navigationOptions: {
                         tabBarLabel: 'Đơn hàng',
                         tabBarIcon: ({ focused, tintColor }) => {
@@ -135,7 +155,7 @@ export const AppNavigator = StackNavigator(
         Product: {
             screen: Product,
             navigationOptions: {
-                tabBarVisible: false                                                  
+                tabBarVisible: false
             }
         },
         Order: {

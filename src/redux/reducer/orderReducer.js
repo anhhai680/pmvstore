@@ -4,12 +4,16 @@ import {
     CREATE_NEW_ORDER_ERROR,
     FETCH_PRODUCT_VARIATION_PENDING,
     FETCH_PRODUCT_VARIATION_SUCCESS,
-    FETCH_PRODUCT_VARIATION_ERROR
+    FETCH_PRODUCT_VARIATION_ERROR,
+    FETCH_ORDERS_PENDING,
+    FETCH_ORDERS_SUCCESS,
+    FETCH_ORDERS_ERROR,
 } from '../constants/actionTypes';
 
 const INITIAL_STATE = {
     isWaiting: false,
     myOrders: [],
+    listOrder: [],
     request_error: null,
     resData: null,
     isFetchingVariation: false,
@@ -36,7 +40,10 @@ export default orderReducer = (state = INITIAL_STATE, action) => {
             }
         }
         case CREATE_NEW_ORDER_PENDING: {
-            return { ...state, isWaiting: true };
+            return {
+                ...state,
+                isWaiting: true
+            };
         }
         case FETCH_PRODUCT_VARIATION_PENDING: {
             return {
@@ -55,6 +62,25 @@ export default orderReducer = (state = INITIAL_STATE, action) => {
             return {
                 isFetchingVariation: false,
                 request_error: action.payload
+            }
+        }
+        case FETCH_ORDERS_PENDING: {
+            return {
+                ...state,
+                isWaiting: true
+            };
+        }
+        case FETCH_ORDERS_SUCCESS: {
+            return {
+                ...state,
+                isWaiting: false,
+                listOrder: action.payload.data
+            }
+        }
+        case FETCH_ORDERS_ERROR: {
+            return {
+                isWaiting: false,
+                listOrder: action.payload
             }
         }
         default:
