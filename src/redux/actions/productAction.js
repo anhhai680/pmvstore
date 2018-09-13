@@ -115,4 +115,3 @@ export const getProductAttributeTerms = (attrId, termId) => async (dispatch) => 
     console.error(error);
   }
 }
-

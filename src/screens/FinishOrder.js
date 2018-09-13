@@ -4,8 +4,7 @@ import { Container, Header, Body, Content, Text, Card, CardItem, Footer } from "
 import { connect } from 'react-redux';
 import Icon from "react-native-vector-icons/FontAwesome";
 import NumberFormat from 'react-number-format';
-
-
+import { Constants } from '../common/Index';
 import ColorView from '../components/ColorView';
 import { successPayment, fetchProductVariations } from '../redux/actions/orderAction'
 
@@ -55,7 +54,14 @@ class FinishOrder extends Component {
                         <Text>Địa chỉ: {order.billing.address_1}</Text>
                         <Text>Điện thoại: {order.billing.phone}</Text>
                         <Text>Email: {order.billing.email}</Text>
-                        <Text>Thành phố: {order.billing.city}</Text>
+                        <Text>Thành phố:
+                        {
+                                Object.keys(Constants.arrCities).map(key => {
+                                    if (key === order.billing.city) {
+                                        return Constants.arrCities[key]
+                                    }
+                                })
+                            }</Text>
                     </Body>
                 </CardItem>
                 <CardItem>

@@ -1,24 +1,12 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, TouchableOpacity, Image, FlatList } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Image, Alert, FlatList } from 'react-native';
 import { Body, Header, Right, Left, Footer, Text, Content, Card, CardItem } from "native-base";
 import NumberFormat from 'react-number-format';
+import dateformat from 'dateformat';
 import { Constants } from '../../common/Index';
 import ListOrderItem from './ListOrderItem';
 
 export default class ListOrder extends Component {
-
-    formatDatetime = (dateTimeValue) => {
-        // var dtString = new Date(dateTimeValue)
-        // var newDateTime = ''
-        // newDateTime += ('0' + dtString.getDate()).slice(-2) + '-'
-        // newDateTime += ('0' + (dtString.getMonth() + 1)).slice(-2) + '-'
-        // newDateTime += dtString.getFullYear().toString() + ' '
-        // newDateTime += ('0' + dtString.getHours()).slice(-2) + ':'
-        // newDateTime += ('0' + dtString.getMinutes()).slice(-2) + ':'
-        // newDateTime += ('0' + dtString.getSeconds()).slice(-2)
-        // return newDateTime;
-        return dateTimeValue;
-    }
 
     onPressItem = (order) => {
         const { navigate } = this.props.navigation;
@@ -27,21 +15,20 @@ export default class ListOrder extends Component {
 
     render() {
         const { item } = this.props;
-        var styleStatus = styles.headerText;
-        styleStatus = item.status === 'cancelled' ? styles.cancelText :
-            item.status === 'completed' ? styles.completedText : styleStatus;
         return (
             <Card>
                 <CardItem>
                     <View style={{ flex: 1, marginHorizontal: -10 }}>
-                        <TouchableOpacity onPress={() => this.onPressItem(this.props.item)}>
+                        <TouchableOpacity onPress={() => this.onPressItem(item)}>
                             <Header style={styles.header}>
                                 <Body>
-                                    <Text style={styles.headerText}>Đơn hàng: {item.order_key.replace('wc_order_', '').toUpperCase()}</Text>
-                                    <Text style={styles.headerText}>Ngày đặt: {this.formatDatetime(item.date_created)}</Text>
+                                    <Text style={styles.headerText}>Đơn hàng: #{item.id}
+                                        {/* {item.order_key.replace('wc_order_', '').toUpperCase()} */}
+                                    </Text>
+                                    <Text style={styles.datecreateText}>Ngày đặt: {dateformat(new Date(item.date_created), "longDate")}</Text>
                                 </Body>
                                 <Left>
-                                    <Text style={styleStatus}>{
+                                    <Text style={styles.headerText}>{
                                         Object.keys(Constants.statusOrder).map(key => {
                                             if (key === item.status) {
                                                 return Constants.statusOrder[key]
@@ -55,9 +42,9 @@ export default class ListOrder extends Component {
                             <FlatList
                                 data={item.line_items}
                                 keyExtractor={(item, index) => item.id}
-                                renderItem={({ item, index }) =>
+                                renderItem={({ item }) =>
                                     <TouchableOpacity onPress={() => this.onPressItem(this.props.item)}>
-                                        <ListOrderItem item={item} STT={index} style={styles} />
+                                        <ListOrderItem item={item} isDetail={false} />
                                     </TouchableOpacity>
                                 }
                             />
@@ -82,13 +69,19 @@ export default class ListOrder extends Component {
 }
 
 
-var styles = StyleSheet.create({
+const styles = StyleSheet.create({
     header: {
-        backgroundColor: '#ff9428',
+        backgroundColor: '#008000',
     },
     headerText: {
         color: '#fff',
         fontWeight: 'bold'
+    },
+    datecreateText: {
+        fontSize: 14,
+        fontStyle: 'italic',
+        color: '#fff',
+        fontWeight: '500'
     },
     cancelText: {
         color: '#f00',
@@ -106,40 +99,8 @@ var styles = StyleSheet.create({
     footerText: {
         fontWeight: 'bold'
     },
-    content2: {
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        margin: 5
-    },
-    content: {
-        flex: 1,
-    },
-    productName: {
-        fontSize: 14,
-        fontWeight: 'bold',
-        color: '#ff8000'
-    },
-    productImage: {
-        width: 75,
-        height: 75,
-        borderWidth: 0.5,
-        fontWeight: 'bold'
-    },
-    priceproduct: {
-        fontSize: 11,
-        fontWeight: '200'
-    },
-    priceTotalproduct: {
-        fontWeight: '400'
-    },
     priceTotal: {
-        color: '#ff0018',
+        color: '#008000',
         fontWeight: 'bold'
     },
-    amountproduct: {
-        fontSize: 11,
-        fontWeight: '200',
-        marginLeft: 5
-    }
 });

@@ -1,43 +1,94 @@
 import React, { Component } from 'react';
-import { Styleheet, View, TouchableOpacity, Image, FlatList } from 'react-native';
-import { Body, Header, Right, Left, Footer, Button, Text, Content, Card, CardItem } from "native-base";
+import { StyleSheet, View, Image } from 'react-native';
+import { connect } from "react-redux";
+import { Text, Card, CardItem } from "native-base";
 import NumberFormat from 'react-number-format';
-import { Constants } from '../../common/Index';
-import Ionicons from "react-native-vector-icons/Ionicons";
+import ColorView from '../ColorView';
 
-export default class ListOrderItem extends Component {
+class ListOrderItem extends Component {
+
     render() {
-        const { item, style, STT } = this.props;
+        const { item, products, isDetail } = this.props;
+        const image = products.filter(p => p.id === item.product_id);
         return (
             <Card>
                 <CardItem>
-                    <View style={{ marginBottom: -10, flexDirection: 'row', alignItems: 'center' }}>
-                        <Ionicons name='ios-cube' size={15} />
-                        <Text> Món hàng {STT + 1}: </Text>
-                    </View>
-                </CardItem>
-                <CardItem>
-                    <View style={style.content}>
-                        {/* <Image source={{ uri: item.Image }}
-                                style={style.productImage}
-                                resizeMode='contain' /> */}
-                        <Text style={style.productName}>{item.name}</Text>
-                        <View style={style.content2}>
-                            <NumberFormat value={item.price} displayType={'text'} thousandSeparator={true}
-                                renderText={
-                                    value => <Text style={style.priceproduct}>Giá: {value} đ</Text>
-                                }
-                            />
-                            <NumberFormat value={item.total} displayType={'text'} thousandSeparator={true}
-                                renderText={
-                                    value => <Text style={style.priceTotalproduct}>TT: {value} đ</Text>
-                                }
-                            />
+                    <View style={styles.content}>
+                        <Image source={{ uri: image[0].images[0].src }}
+                            style={styles.productImage} />
+                        <View style={styles.content2}>
+                            <Text style={styles.productName}>{item.name}</Text>
+                            <Text style={styles.amountproduct}>SL: {item.quantity}</Text>
+                            <View style={styles.content}>
+                                <NumberFormat value={item.price} displayType={'text'} thousandSeparator={true}
+                                    renderText={
+                                        value => <Text style={styles.priceproduct}>Giá: {value} đ</Text>
+                                    }
+                                />
+                                <NumberFormat value={item.total} displayType={'text'} thousandSeparator={true}
+                                    renderText={
+                                        value => <Text style={styles.priceTotalproduct}>TT: {value} đ</Text>
+                                    }
+                                />
+                            </View>
+                            {
+                                isDetail ?
+                                    item.meta_data.length > 0 ?
+                                        <View style={{ flexDirection: 'row' }}>
+                                            <Text>Màu mực:</Text>
+                                            <ColorView color={item.meta_data.filter(i => i.key === 'pa_mau-muc')[0].value} />
+                                        </View>
+                                        : null
+                                    : null
+                            }
                         </View>
-                        <Text style={style.amountproduct}>SL: {item.quantity}</Text>
                     </View>
                 </CardItem>
             </Card>
         )
     }
 }
+
+const mapStateToProps = (state) => ({
+    products: state.home.products,
+});
+
+const mapActionsToProps = {
+}
+
+export default connect(mapStateToProps, mapActionsToProps)(ListOrderItem);
+
+const styles = StyleSheet.create({
+    content2: {
+        flex: 1,
+        justifyContent: 'space-between',
+        margin: 5
+    },
+    content: {
+        flex: 1,
+        justifyContent: 'space-between',
+        flexDirection: 'row',
+    },
+    productName: {
+        fontSize: 14,
+        fontWeight: 'bold',
+        color: '#ff8000'
+    },
+    productImage: {
+        width: 90,
+        height: 90,
+        resizeMode: 'contain'
+    },
+    amountproduct: {
+        fontSize: 11,
+        fontWeight: '200',
+        marginVertical: 5
+    },
+    priceproduct: {
+        fontSize: 11,
+        fontWeight: '200'
+    },
+    priceTotalproduct: {
+        fontWeight: '400'
+    },
+})

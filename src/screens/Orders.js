@@ -52,7 +52,9 @@ class Orders extends Component {
 
                         </View>
                         <View style={styles.filterStatus}>
-                            <Picker selectedValue={this.state.selectedStatus}
+                            <Picker style={{ height: 30 }}
+                                enabled={!isWaiting}
+                                selectedValue={this.state.selectedStatus}
                                 mode={'dropdown'} onValueChange={value => this.onValueChange(value)}>
                                 {
                                     Object.keys(Constants.statusOrder).map((key, index) => {

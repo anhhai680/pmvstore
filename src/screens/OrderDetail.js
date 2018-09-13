@@ -1,25 +1,31 @@
 import React, { Component } from 'react';
-import { StyleSheet, TouchableOpacity, FlatList, Image } from 'react-native';
-import { connect } from "react-redux";
+import { View, StyleSheet, TouchableOpacity, FlatList, Image } from 'react-native';
 import { Container, Header, Left, Right, Body, Content, Text, Card, CardItem } from "native-base";
 import NumberFormat from 'react-number-format';
+import dateformat from 'dateformat';
 import Ionicons from "react-native-vector-icons/Ionicons";
 import ListOrderItem from "../components/order/ListOrderItem";
 import { Constants } from '../common/Index';
 
-class OrderDetail extends Component {
-
-    constructor(props) {
-        super(props);
-        this.state = {
-        };
-    }
+export default class OrderDetail extends Component {
 
     renderOrderInfos = (order) => {
         return (
             <Card>
                 <CardItem header>
-                    <Text>Thông tin đơn hàng (#{order.id})</Text>
+                    <View>
+                        <Text>Thông tin đơn hàng (#{order.id})</Text>
+                        <Text style={styles.datecreateText}>Ngày đặt: {dateformat(new Date(order.date_created), "longDate")}</Text>
+                    </View>
+                    <Right>
+                        <Text style={styles.statusOrder}>{
+                            Object.keys(Constants.statusOrder).map(key => {
+                                if (key === order.status) {
+                                    return Constants.statusOrder[key]
+                                }
+                            })
+                        }</Text>
+                    </Right>
                 </CardItem>
                 <CardItem>
                     <Body>
@@ -29,7 +35,7 @@ class OrderDetail extends Component {
                         <Text>Email: {order.billing.email}</Text>
                         <Text>Thành phố:
                         {
-                                Object.keys(Constants.arrCities).map((key, index) => {
+                                Object.keys(Constants.arrCities).map(key => {
                                     if (key === order.billing.city) {
                                         return Constants.arrCities[key]
                                     }
@@ -78,8 +84,8 @@ class OrderDetail extends Component {
             <FlatList
                 data={products}
                 keyExtractor={(item, index) => item.id}
-                renderItem={({ item, index }) =>
-                    <ListOrderItem item={item} STT={index} style={styles} />
+                renderItem={({ item }) =>
+                    <ListOrderItem item={item} isDetail={true} />
                 }
             />
         )
@@ -124,40 +130,16 @@ class OrderDetail extends Component {
     }
 }
 
-const mapStateToProps = (state) => ({
-});
-
-const mapActionsToProps = {
-}
-
-export default connect(mapStateToProps, mapActionsToProps)(OrderDetail);
-
-var styles = StyleSheet.create({
-    content: {
-        flex: 1,
-    },
-    content2: {
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        margin: 5
-    },
-    amountproduct: {
-        fontSize: 11,
-        fontWeight: '200',
-        marginLeft: 5
-    },
-    productName: {
-        fontSize: 14,
+const styles = StyleSheet.create({
+    statusOrder: {
+        color: '#000',
         fontWeight: 'bold',
-        color: '#ff8000'
+        fontSize: 18
     },
-    priceproduct: {
+    datecreateText: {
         fontSize: 11,
-        fontWeight: '200'
-    },
-    priceTotalproduct: {
-        fontWeight: '400'
+        fontWeight: 'normal',
+        fontStyle: 'italic'
     },
     body: {
         color: '#FFF',
