@@ -1,13 +1,13 @@
 import { Dimensions } from 'react-native';
 
-const { width,height } = Dimensions.get("window");
+const { width, height } = Dimensions.get("window");
 const Constants = {
     Dimension: {
         ScreenWidth(percent = 1) {
-          return Dimensions.get('window').width * percent
+            return Dimensions.get('window').width * percent
         },
         ScreenHeight(percent = 1) {
-          return Dimensions.get('window').height * percent
+            return Dimensions.get('window').height * percent
         },
     },
     Window: {
@@ -92,9 +92,9 @@ const Constants = {
         'YB': 'Yên Bái',
         'PY': 'Phú Yên'
     },
-    statusOrder:{
+    statusOrder: {
         'any': 'Tất cả',
-        'pending': 'Đang chờ xử lý',
+        'pending': 'Mới đặt',
         'processing': 'Đang xử lý',
         'on-hold': 'Đang chờ',
         'completed': 'Hoàn tất',

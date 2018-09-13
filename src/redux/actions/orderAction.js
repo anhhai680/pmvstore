@@ -163,7 +163,3 @@ export const fetchingOrders = (status) => (dispatch) => {
             });
         });
 }
-
-export const filterStatusOrder = (statuskey) => (dispatch) => {
-    dispatch({ type: FETCH_ORDERS_PENDING });
-}
