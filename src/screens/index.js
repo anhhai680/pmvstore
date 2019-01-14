@@ -36,3 +36,6 @@ export const FinishOrder = _FinishOrder;
 
 import _Notifications from './Notifications';
 export const Notifications = _Notifications;
+
+import _Slash from "./Slash";
+export const Slash = _Slash;

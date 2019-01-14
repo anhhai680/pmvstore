@@ -8,6 +8,8 @@ import type { Notification, NotificationOpen } from 'react-native-firebase';
 import store from './src/redux/store';
 import AppWithNavigationState from './src/navigators/AppRouter';
 
+import SlashScreen from "./src/screens/Slash";
+
 
 
 export default class App extends Component {
@@ -154,7 +156,8 @@ export default class App extends Component {
     if (!this.state.isReady) {
       return (
         <View style={{ flex: 1, justifyContent: 'center', alignContent: 'center' }}>
-          <ActivityIndicator size='large' />
+          {/* <ActivityIndicator size='large' /> */}
+          <SlashScreen />
         </View>
       )
     }
