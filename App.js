@@ -4,8 +4,9 @@ import { Provider } from 'react-redux';
 import { Root } from 'native-base';
 import firebase from 'react-native-firebase';
 import type { Notification, NotificationOpen } from 'react-native-firebase';
+import { PersistGate } from 'redux-persist/integration/react';
 
-import store from './src/redux/store';
+import ReduxConfig from './src/redux/store';
 import AppWithNavigationState from './src/navigators/AppRouter';
 
 import SlashScreen from "./src/screens/Slash";
@@ -156,16 +157,17 @@ export default class App extends Component {
     if (!this.state.isReady) {
       return (
         <View style={{ flex: 1, justifyContent: 'center', alignContent: 'center' }}>
-          {/* <ActivityIndicator size='large' /> */}
-          <SlashScreen />
+          <ActivityIndicator size='large' />
         </View>
       )
     }
     return (
-      <Provider store={store}>
-        <Root>
-          <AppWithNavigationState />
-        </Root>
+      <Provider store={ReduxConfig.store}>
+        <PersistGate loading={<SlashScreen />} persistor={ReduxConfig.persistor}>
+          <Root>
+            <AppWithNavigationState />
+          </Root>
+        </PersistGate>
       </Provider>
     );
   }
