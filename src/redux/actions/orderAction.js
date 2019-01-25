@@ -133,9 +133,9 @@ export const fetchProductVariations = (id) => async (dispatch) => {
     }
 }
 
-export const fetchingOrders = (status) => (dispatch) => {
+export const fetchingOrders = (status, n_page) => (dispatch) => {
     dispatch({ type: FETCH_ORDERS_PENDING });
-    WooAPI.getOrders(711, status)
+    WooAPI.getOrders(711, status, n_page)
         .then((response) => {
             if (response !== undefined) {
                 dispatch({

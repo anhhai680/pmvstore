@@ -134,7 +134,6 @@ const mapStateToProps = (state) => ({
     resData: state.order.resData,
     arrCities: state.checkout.arrCities,
     selectedCity: state.checkout.selectedCity,
-    totalPrice: state.cart.totalPrice,
     customerInfo: state.checkout.customerInfo,
     loading: state.checkout.loading
 });
