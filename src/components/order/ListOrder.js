@@ -41,7 +41,7 @@ export default class ListOrder extends Component {
                         <Content>
                             <FlatList
                                 data={item.line_items}
-                                keyExtractor={(item, index) => item.id}
+                                keyExtractor={(item) => item.id}
                                 renderItem={({ item }) =>
                                     <TouchableOpacity onPress={() => this.onPressItem(this.props.item)}>
                                         <ListOrderItem item={item} isDetail={false} />
@@ -50,6 +50,16 @@ export default class ListOrder extends Component {
                             />
                         </Content>
                         <Footer style={styles.footer}>
+                            <Left>
+                                <View style={{ flexDirection: 'row', marginLeft: 5 }}>
+                                    <Text style={styles.footerText}>KM: </Text>
+                                    <NumberFormat value={item.discount_total} displayType={'text'} thousandSeparator={true}
+                                        renderText={
+                                            value => <Text style={styles.priceTotal}>{value} đ</Text>
+                                        }
+                                    />
+                                </View>
+                            </Left>
                             <Right>
                                 <View style={{ flexDirection: 'row', marginRight: 5 }}>
                                     <Text style={styles.footerText}>Tổng cộng: </Text>

@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import NumberFormat from 'react-number-format';
 import Ionicons from "react-native-vector-icons/Ionicons";
 
-import { updateCartItem, deleteCartItem, getCouponCodes, checkCouponCode, fetchingCartItem } from '../redux/actions/cartAction';
+import { updateCartItem, deleteCartItem, getCouponCodes, checkCouponCode, cancelCouponCode, fetchingCartItem } from '../redux/actions/cartAction';
 import * as CartComponent from "../components/cart";
 import CouponCode from "../components/cart/couponCode";
 
@@ -14,41 +14,30 @@ class Cart extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            coupon: null
-        };
         this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
-        this.updateQuantityCartItem = this.updateQuantityCartItem.bind(this);
         this.onCouponChangeText = this.onCouponChangeText.bind(this);
         this.deleteProductInCart = this.deleteProductInCart.bind(this);
         this.updateQuantityCartItem = this.updateQuantityCartItem.bind(this);
     }
 
     componentWillMount() {
-        this.getCartItems();
-        const { cartItems, couponCodes } = this.props;
-        if (cartItems.length > 0 && couponCodes.length <= 0) {
+        const { couponCodes } = this.props;
+        if (couponCodes.length <= 0) {
             this.props.getCouponCodes();
         }
     }
 
     componentDidMount() {
+        this.getCartItems();
         const { cartItems } = this.props;
         if (cartItems.length <= 0) {
             setTimeout(() => this.props.navigation.goBack(null), 1000);
         }
     }
 
-    componentDidUpdate(prevProps, prevState) {
-        // console.log('prevProps', prevProps);
-        // if (this.props.handleCouponError !== null) {
-        //     Alert.alert(
-        //         'Thông báo',
-        //         this.props.handleCouponError.message !== null ?
-        //             this.props.handleCouponError.message : this.props.handleCouponError.code
-        //     );
-        // } else if (this.props.coupon !== null) {
-        //     Alert.alert('Thông báo', 'Mã giảm giá đã được áp dụng thành công!');
+    componentDidUpdate(prevProps) {
+        // if (prevProps.cartItems.length !== this.props.cartItems.length) {
+        //     this.getCartItems();
         // }
     }
 
@@ -57,12 +46,12 @@ class Cart extends Component {
         await this.props.fetchingCartItem();
     }
 
-    updateQuantityCartItem(id, quantity) {
+    updateQuantityCartItem(id, quantity, variationid) {
         if (quantity == undefined || quantity == null) {
             Alert.alert('Thông báo', 'Giá trị truyền vào không hợp lệ!');
         }
         const { cartItems } = this.props;
-        const index = cartItems.findIndex(p => p.product_id === id);
+        const index = cartItems.findIndex(p => p.product_id === id && p.variation_id === variationid);
         if (index > -1) {
             cartItems[index].quantity = quantity;
             let productItem = cartItems[index];
@@ -73,13 +62,13 @@ class Cart extends Component {
         }
     }
 
-    deleteProductInCart(id) {
+    deleteProductInCart(id, variationid) {
         //rowMap[`${secId}${rowId}`].props.closeRow();
         // const newData = [...this.state.listViewData];
         // newData.splice(rowId, 1);
         // this.setState({ listViewData: newData });
-        const product = this.props.cartItems.find(p => p.product_id === id);
-        if (product == undefined) {
+        const product = this.props.cartItems.find(p => p.product_id === id && p.variation_id === variationid);
+        if (product === undefined) {
             console.log("Undefined product with id: " + id);
             Alert.alert('Thông báo', 'Không thể xoá sản phẩm ra khỏi giỏ hàng!');
         } else {
@@ -87,8 +76,8 @@ class Cart extends Component {
                 'Thông báo',
                 'Bạn có thực sự muốn xoá sản phẩm này khỏi giỏ hàng ?',
                 [
-                    { text: 'HUỶ', onPress: () => console.log('Cancel pressed'), style: 'cancel' },
-                    { text: 'ĐỒNG Ý', onPress: () => this.props.deleteCartItem(product) }
+                    { text: 'ĐỒNG Ý', onPress: () => this.props.deleteCartItem(product) },
+                    { text: 'HUỶ', onPress: () => console.log('Cancel pressed'), style: 'cancel' }
                 ]
             );
         }
@@ -112,8 +101,12 @@ class Cart extends Component {
         }
     }
 
+    onCancelCoupon = () => {
+        this.props.cancelCouponCode();
+    }
+
     render() {
-        const { cartItems } = this.props;
+        const { cartItems, coupon } = this.props;
         const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
         if (cartItems.length <= 0) {
             return (
@@ -185,10 +178,11 @@ class Cart extends Component {
                                 </Body>
                                 <Right>
                                     <View style={{ flex: 1, width: 50, justifyContent: 'center' }}>
-                                        <CartComponent.quantityItems pId={item.product_id} selectedValue={item.quantity} onValueChange={this.updateQuantityCartItem} />
+                                        <CartComponent.quantityItems pId={item.product_id} selectedValue={item.quantity} 
+                                        variationid={item.variation_id} onValueChange={this.updateQuantityCartItem} />
                                     </View>
                                     <View style={{ position: 'absolute', top: -15, right: 2 }}>
-                                        <TouchableOpacity onPress={() => this.deleteProductInCart(item.product_id)}>
+                                        <TouchableOpacity onPress={() => this.deleteProductInCart(item.product_id, item.variation_id)}>
                                             <Ionicons name="ios-close" size={30} />
                                         </TouchableOpacity>
                                     </View>
@@ -196,7 +190,7 @@ class Cart extends Component {
                             </ListItem>
                         }
                         renderRightHiddenRow={(data, secId, rowId, rowMap) =>
-                            <Button full danger onPress={() => this.deleteProductInCart(data.product_id)}>
+                            <Button full danger onPress={() => this.deleteProductInCart(data.product_id, data.variation_id)}>
                                 <Icon active name="trash" />
                             </Button>
                         }
@@ -207,7 +201,9 @@ class Cart extends Component {
                             <Card>
                                 <CardItem>
                                     <Body>
-                                        <CouponCode onCouponChangeText={this.onCouponChangeText} />
+                                        <CouponCode onCouponChangeText={this.onCouponChangeText}
+                                            coupon={coupon}
+                                            onCancelCoupon={this.onCancelCoupon} />
                                     </Body>
                                 </CardItem>
                             </Card>
@@ -215,19 +211,35 @@ class Cart extends Component {
                             null
                     }
                 </Content>
-                <Footer style={{ backgroundColor: '#FF8000' }}>
+                <Footer style={{ backgroundColor: '#FF891E' }}>
                     <Left style={{ marginLeft: 10 }}>
-                        <Text style={{ color: 'white', fontWeight: 'bold' }}>SL: {this.props.total}</Text>
-                        <NumberFormat value={(this.props.totalPrice)} displayType={'text'} thousandSeparator={true}
-                            renderText={
-                                value => <Text style={{ color: 'white', fontWeight: 'bold' }}>TT: {value} đ</Text>
-                            }
-                        />
+                        <View style={{ flex: 1 }}>
+                            <View style={{ flexDirection: 'row' }}>
+                                <Text style={{ color: '#fff', fontWeight: 'bold' }}>TT: </Text>
+                                <NumberFormat value={(this.props.totalPrice)} displayType={'text'} thousandSeparator={true}
+                                    renderText={
+                                        value => <Text style={{ color: '#fff', fontWeight: 'bold' }}>{value} đ</Text>
+                                    }
+                                />
+                            </View>
+                            <View style={{ flexDirection: 'row' }}>
+                                <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 12 }}>Tiền giảm: </Text>
+                                <NumberFormat value={(this.props.totalDiscount)} displayType={'text'} thousandSeparator={true}
+                                    renderText={
+                                        value => <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 12 }}>{value} đ</Text>
+                                    }
+                                />
+                            </View>
+                            <View style={{ flexDirection: 'row' }}>
+                                <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 12 }}>Số lượng: </Text>
+                                <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 12 }}>{this.props.total}</Text>
+                            </View>
+                        </View>
                     </Left>
-                    <Right style={{ marginRight: 5 }}>
-                        <Button full success onPress={() => this.props.navigation.navigate('Checkout')}>
+                    <Right>
+                        <Button large style={styles.button} onPress={() => this.props.navigation.navigate('Checkout')}>
                             <Text style={{ fontWeight: 'bold', fontSize: 16 }}>Thanh toán</Text>
-                            <Icon name="ios-arrow-forward" style={{ color: '#E4D218' }} />
+                            <Icon name="ios-arrow-forward" style={{ color: '#fff' }} />
                         </Button>
                     </Right>
                 </Footer>
@@ -241,6 +253,7 @@ const mapStateToProps = (state) => ({
     cartItems: state.cart.cartItems,
     total: state.cart.total,
     totalPrice: state.cart.totalPrice,
+    totalDiscount: state.cart.totalDiscount,
     couponCodes: state.cart.couponCodes,
     handleCouponError: state.cart.handleCouponError,
     coupon: state.cart.coupon
@@ -251,7 +264,8 @@ const mapActionsToProps = {
     deleteCartItem,
     getCouponCodes,
     checkCouponCode,
-    fetchingCartItem
+    fetchingCartItem,
+    cancelCouponCode
 };
 
 export default connect(mapStateToProps, mapActionsToProps)(Cart);
@@ -299,6 +313,11 @@ var styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
     },
+    button: {
+        backgroundColor: '#01509B',
+        borderTopLeftRadius: 50,
+        borderBottomLeftRadius: 50
+    },
     buttonText: {
         color: 'white',
         textAlign: 'center',
@@ -306,7 +325,7 @@ var styles = StyleSheet.create({
         fontSize: 14
     },
     price: {
-        color: '#018206'
+        color: '#01509B'
     },
     notification: {
         justifyContent: 'center',
@@ -318,22 +337,21 @@ var styles = StyleSheet.create({
         width: 35,
         height: 35,
         borderRadius: 20,
-        borderWidth: 1,
-        backgroundColor: '#FF891E',
-        borderColor: '#008000',
+        backgroundColor: '#ff891e',
         textAlign: 'center',
         alignItems: 'center',
         justifyContent: 'center',
         paddingTop: 6,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        color: '#fff'
     },
     tabinactived: {
         width: 35,
         height: 35,
         borderRadius: 20,
+        backgroundColor: '#fff',
         borderWidth: 1,
-        backgroundColor: 'gray',
-        borderColor: '#fff',
+        borderColor: '#B2B2B2',
         textAlign: 'center',
         alignItems: 'center',
         justifyContent: 'center',

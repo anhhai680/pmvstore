@@ -12,7 +12,8 @@ class Orders extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            selectedStatus: 'any'
+            selectedStatus: 'any',
+            page: 1,
         };
     }
 
@@ -21,11 +22,11 @@ class Orders extends Component {
     }
 
     getOrders = () => {
-        this.props.fetchingOrders(this.state.selectedStatus);
+        this.props.fetchingOrders(this.state.selectedStatus, this.state.page);
     }
 
     onValueChange = (value) => {
-        this.props.fetchingOrders(value);
+        this.props.fetchingOrders(value, 1);
         this.setState({
             selectedStatus: value
         })
@@ -72,21 +73,6 @@ class Orders extends Component {
                             !isWaiting && orders.length === 0 ?
                                 <View style={styles.container}>
                                     <Text style={styles.notification}>Hiện chưa có thông tin đơn hàng để hiển thị!</Text>
-                                    {/* <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 30 }}>
-                                        <TouchableOpacity
-                                            onPress={() => this.props.navigation.goBack(null)}
-                                            style={{
-                                                backgroundColor: '#008000',
-                                                borderRadius: 6,
-                                                borderColor: '#FFF',
-                                                width: '100%',
-                                                height: 30,
-                                                padding: 10,
-                                                justifyContent: 'center'
-                                            }}>
-                                            <Text style={{ textAlign: 'center', color: '#FFF' }}>Tiếp tục đặt hàng</Text>
-                                        </TouchableOpacity>
-                                    </View> */}
                                 </View> :
                                 <FlatList
                                     data={orders}
@@ -113,7 +99,7 @@ const mapActionsToProps = {
 
 export default connect(mapStateToProps, mapActionsToProps)(Orders);
 
-var styles = StyleSheet.create({
+const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',

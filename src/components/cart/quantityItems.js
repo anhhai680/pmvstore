@@ -5,7 +5,7 @@ import { Dropdown } from 'react-native-material-dropdown';
 
 export default class quantityItems extends Component {
     render() {
-        const {selectedValue, pId} = this.props;
+        const {selectedValue, pId, variationid} = this.props;
         let data = [
             {value: '1'},
             {value: '2'},
@@ -32,7 +32,7 @@ export default class quantityItems extends Component {
                 label="Số lượng"
                 data={data}
                 value={selectedValue}
-                onChangeText={(value) => this.props.onValueChange(pId,value)}
+                onChangeText={(value) => this.props.onValueChange(pId, value, variationid)}
             />
         );
     }

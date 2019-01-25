@@ -86,12 +86,12 @@ export const WooAPI = {
       console.error(error);
     }
   },
-  getOrders: async (include, status) => {
+  getOrders: async (include, status, n_page) => {
     try {
       let params = {
-        page: 1,
+        page: n_page,
         per_page: 50,
-        include,
+        //include,
         status
       };
       const response = await API.get('orders', params);

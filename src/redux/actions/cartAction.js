@@ -10,7 +10,8 @@ import {
     COUPON_CODE_FETCHING,
     COUPON_CODE_SUCCESS,
     COUPON_CODE_ERROR,
-    COUPON_CODE_VALIDATE
+    COUPON_CODE_VALIDATE,
+    COUPON_CODE_CANCEL
 } from '../constants/actionTypes';
 
 export const fetchingCartItem = () => async (dispatch) => {
@@ -38,10 +39,12 @@ export const addCartItem = (product) => async (dispatch) => {
         const products = await AsyncStorage.getItem('pmvcart');
         if (products !== null && products.length > 0) {
             pmvcart = JSON.parse(products);
-            const pIndex = pmvcart.findIndex(p => p.product_id === product.product_id) > -1 ? true : false;
+            const pIndex = pmvcart.findIndex(
+                p => p.product_id === product.product_id &&
+                    p.variation_id === product.variation_id) > -1 ? true : false;
             if (pIndex) { // Product is existing in storage
                 pmvcart.map(item => {
-                    if (item.product_id === product.product_id) {
+                    if (item.product_id === product.product_id && item.variation_id === product.variation_id) {
                         const quantity = Number(item.quantity) + Number(product.quantity);
                         item.quantity = quantity;
                     }
@@ -97,7 +100,8 @@ export const updateCartItem = (product) => async (dispatch) => {
         await AsyncStorage.getItem('pmvcart', (error, result) => {
             if (result) {
                 pmvcart = JSON.parse(result);
-                const index = pmvcart.findIndex(p => p.product_id === product.product_id);
+                const index = pmvcart.findIndex(p => p.product_id === product.product_id &&
+                    p.variation_id === product.variation_id);
                 if (index > -1) {
                     pmvcart[index].quantity = product.quantity;
                     AsyncStorage.setItem('pmvcart', JSON.stringify(pmvcart), (error) => {
@@ -121,11 +125,14 @@ export const updateCartItem = (product) => async (dispatch) => {
 export const deleteCartItem = (product) => async (dispatch) => {
     try {
         let pmvcart = [];
+        let pmvcartTemp = [];
         await AsyncStorage.getItem('pmvcart', (error, result) => {
             if (result) {
                 pmvcart = JSON.parse(result);
+                pmvcartTemp = JSON.parse(result);
                 if (pmvcart !== null && pmvcart.length > 0) {
-                    pmvcart = pmvcart.filter(p => p.product_id !== product.product_id);
+                    pmvcart = pmvcartTemp.filter(p => p.product_id !== product.product_id ||
+                       (p.product_id === product.product_id && p.variation_id !== product.variation_id));
                 }
                 AsyncStorage.setItem('pmvcart', JSON.stringify(pmvcart), (error) => {
                     if (!error) {
@@ -209,4 +216,8 @@ export const checkCouponCode = (couponCode) => (dispatch, getState) => {
             code: couponCode
         }
     })
+}
+
+export const cancelCouponCode = () => (dispatch) => {
+    dispatch({ type: COUPON_CODE_CANCEL })
 }

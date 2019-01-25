@@ -34,6 +34,7 @@ class Product extends Component {
             quantity: '1',
             temSelected: 'Black',
             inkSelected: 'Black',
+            variation_id: 0,
             codeSelected: 'GT1221 - 3,700 tem/hộp',
             printerSelected: 'Không biết lõi',
             modalVisible: false,
@@ -84,7 +85,7 @@ class Product extends Component {
 
     getProduct = () => {
         const { id } = this.props.navigation.state.params;
-        const product = this.props.products.find(x => x.id === id);
+        const product = Object.assign({}, this.props.products.find(x => x.id === id));
         this.setState({ product });
     }
 
@@ -96,6 +97,7 @@ class Product extends Component {
             const variations = product.attributes.filter(a => a.variation == true);
             if (variations.length > 0 && product.default_attributes.length > 0) {
                 const defaultAttributes = product.default_attributes;
+                this.setState({ variation_id: product.variations[0] })
                 this.setDefaultAttributes(defaultAttributes);
             }
             this.setState({ attributes, variations });
@@ -182,21 +184,24 @@ class Product extends Component {
 
     inkColorChanged = (color) => {
         const { productVariations } = this.props;
-        if (productVariations !== undefined && productVariations.length > 0) {
-            productVariations.map((item, index) => {
-                item.attributes.map((attr) => {
-                    if (attr.option === color) {
-                        let newProduct = this.state.product;
-                        newProduct.price = item.price;
-                        this.setState({ product: newProduct });
-                        return;
-                    }
+        if (productVariations !== null && productVariations !== undefined){
+            if (productVariations.length > 0){
+                productVariations.map((item, index) => {
+                    item.attributes.map((attr) => {
+                        if (attr.option === color) {
+                            let newProduct = this.state.product;
+                            newProduct.price = item.price;
+                            this.setState({ product: newProduct });
+                            this.setState({ variation_id: item.id })
+                            return;
+                        }
+                    });
                 });
-            });
+                const key = 'pa_mau-muc';
+                this.setState({ inkSelected: color });
+                this.setProductAttributes(key, color);
+            }
         }
-        const key = 'pa_mau-muc';
-        this.setState({ inkSelected: color });
-        this.setProductAttributes(key, color);
     }
 
     productCodeSelectedChanged = (codeSelected) => {
@@ -219,6 +224,7 @@ class Product extends Component {
     addProductToCartItem = (product) => {
         const data = {
             product_id: product.id,
+            variation_id: this.state.variation_id,
             name: product.name,
             image: product.images[0].src,
             quantity: this.state.quantity,
