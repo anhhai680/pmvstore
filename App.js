@@ -10,6 +10,7 @@ import ReduxConfig from './src/redux/store';
 import AppWithNavigationState from './src/navigators/AppRouter';
 
 import SlashScreen from "./src/screens/Slash";
+import LoadingScreen from "./src/screens/Loading";
 
 
 
@@ -163,7 +164,7 @@ export default class App extends Component {
     }
     return (
       <Provider store={ReduxConfig.store}>
-        <PersistGate loading={<SlashScreen />} persistor={ReduxConfig.persistor}>
+        <PersistGate loading={<LoadingScreen />} persistor={ReduxConfig.persistor}>
           <Root>
             <AppWithNavigationState />
           </Root>
