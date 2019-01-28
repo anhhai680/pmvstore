@@ -38,6 +38,13 @@ export const createNewOrder = (orderInfo) => async (dispatch) => {
                         resData: response
                     }
                 })
+                await AsyncStorage.removeItem('pmvcart', (error) => {
+                    if (!error) {
+                        dispatch({
+                            type: EMPTY_CART_ITEM
+                        })
+                    }
+                })
             }
             else {
                 dispatch({
@@ -75,13 +82,13 @@ export const createNewOrder = (orderInfo) => async (dispatch) => {
 
 export const successPayment = () => async (dispatch) => {
     try {
-        await AsyncStorage.removeItem('pmvcart', (error) => {
-            if (!error) {
-                dispatch({
-                    type: EMPTY_CART_ITEM
-                })
-            }
-        })
+        // await AsyncStorage.removeItem('pmvcart', (error) => {
+        //     if (!error) {
+        //         dispatch({
+        //             type: EMPTY_CART_ITEM
+        //         })
+        //     }
+        // })
         dispatch({ type: SUCCESS_PAYMENT });
     } catch (error) {
         console.error(error);
