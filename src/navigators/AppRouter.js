@@ -22,14 +22,14 @@ export const OrderStack = StackNavigator(
             screen: Checkout,
             navigationOptions: {
                 header: null,
-                //tabBarVisible: false
+                tabBarVisible: false
             }
         },
         FinishOrder: {
             screen: FinishOrder,
             navigationOptions: {
                 header: null,
-                //tabBarVisible: false
+                tabBarVisible: false
             }
         }
     },

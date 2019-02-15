@@ -9,7 +9,8 @@ import {
     COUPON_CODE_FETCHING,
     COUPON_CODE_SUCCESS,
     COUPON_CODE_ERROR,
-    COUPON_CODE_VALIDATE
+    COUPON_CODE_VALIDATE,
+    COUPON_CODE_CANCEL
 } from '../constants/actionTypes';
 
 const INITIAL_STATE = {
@@ -17,134 +18,84 @@ const INITIAL_STATE = {
     cartItems: [],
     total: 0,
     totalPrice: 0,
+    totalDiscount: 0,
     couponCodes: [],
     coupon: null,
     handleCouponError: null
 };
 
+export const calculatorPrice = (cartItems, coupon) => {
+    let total = 0
+    let totalDiscount = 0
+    let finalPrice = 0
+    if (cartItems !== undefined){
+        //Tính tổng số lượng món hàng và giá tổng thành tiền 
+        cartItems.map(item => {
+            total += Number(item.quantity)
+            finalPrice += Number(item.price) * Number(item.quantity)
+        })
+    }
+    const couponAmount = coupon === null ? 0 : parseFloat(coupon.amount)
+    if (coupon !== null) {
+        //Tính số tiền giảm và tổng tiền giảm khi sử dụng Counpon Code
+        if (coupon.discount_type == 'percent') {
+            totalDiscount = finalPrice * couponAmount / 100.0
+            finalPrice = finalPrice - totalDiscount
+        } else {
+            totalDiscount = couponAmount
+            finalPrice = finalPrice - couponAmount
+        }
+    }
+    return {
+        coupon,
+        total,
+        totalDiscount,
+        finalPrice
+    }
+}
+
 export default cartReducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
         case FETCHING_CART_ITEM:
-            let total = 0;
-            let totalPrice = 0;
-            const newData = action.payload.data;
-            if (newData !== null && newData.length > 0) {
-                newData.map(item => {
-                    total += Number(item.quantity);
-                    totalPrice += Number(item.price) * Number(item.quantity);
-                })
-            }
+        case ADD_CART_ITEM:
+        case DELETE_CART_ITEM:
+        case UPDATE_CART_ITEM: {
+            const newData = action.payload.data
+            let outputValue = null
+            outputValue = calculatorPrice(newData, state.coupon)
             return Object.assign(
                 {},
                 state,
                 {
                     cartItems: newData,
-                    total: total,
-                    totalPrice: totalPrice
-                }
-            )
-        case EMPTY_CART_ITEM:
-            return { ...state };
-        case ADD_CART_ITEM: {
-            // const isExisted = state.cartItems.findIndex(p => p.product_id === action.payload.product_id) > -1 ? true : false;
-            // return Object.assign(
-            //     {},
-            //     state,
-            //     isExisted ? {
-            //         cartItems: state.cartItems.map((item) => {
-            //             if (item.product_id === action.payload.product_id) {
-            //                 item.quantity = Number(action.payload.quantity);
-            //             }
-            //             return item;
-            //         })
-            //     } : { cartItems: [...state.cartItems, action.payload] },
-            //     {
-            //         total: state.total + Number(action.payload.quantity),
-            //         totalPrice: state.totalPrice + Number(action.payload.price)
-            //     }
-            // );
-
-            let total = 0;
-            let totalPrice = 0;
-            const newData = action.payload.data;
-            //const newData = state.cartItems.concat(action.payload.data);
-            if (newData !== null && newData.length > 0) {
-                newData.map(item => {
-                    total += Number(item.quantity);
-                    totalPrice += Number(item.price) * Number(item.quantity);
-                })
-            }
-            return Object.assign(
-                {},
-                state,
-                {
-                    cartItems: newData,
-                    total: total,
-                    totalPrice: totalPrice
+                    total: outputValue.total,
+                    totalPrice: outputValue.finalPrice,
+                    totalDiscount: outputValue.totalDiscount
                 }
             )
         }
         case REMOVE_CART_ITEM:
             return { ...state };
-        case DELETE_CART_ITEM:
-            {
-                // const newData = [...state.cartItems];
-                // const index = newData.indexOf(action.payload);
-                // if (index !== -1) {
-                //     newData.splice(index, 1);
-                //     return Object.assign(
-                //         {},
-                //         state,
-                //         { cartItems: newData },
-                //         {
-                //             total: state.total - Number(action.payload.quantity),
-                //             totalPrice: state.totalPrice - Number(action.payload.price)
-                //         }
-                //     );
-                // }
-                // return { ...state };
-                let total = 0;
-                let totalPrice = 0;
-                const newData = action.payload.data;
-                if (newData !== null && newData.length > 0) {
-                    newData.map(item => {
-                        total += Number(item.quantity);
-                        totalPrice += Number(item.price) * Number(item.quantity);
-                    })
-                }
-                return Object.assign(
-                    {},
-                    state,
-                    {
-                        cartItems: newData,
-                        total: total,
-                        totalPrice: totalPrice
-                    }
-                );
-            }
-        case UPDATE_CART_ITEM:
-            {
-                let total = 0;
-                let totalPrice = 0;
-                const newData = action.payload.data;
-                newData.map(item => {
-                    total += Number(item.quantity);
-                    totalPrice += Number(item.price) * Number(item.quantity);
-                });
-                return Object.assign(
-                    {},
-                    state,
-                    {
-                        cartItems: newData,
-                        total: total,
-                        totalPrice: totalPrice
-                    }
-                );
-            }
+        case EMPTY_CART_ITEM:
+            return { ...state };
         case SUCCESS_PAYMENT:
             return INITIAL_STATE;
         case COUPON_CODE_FETCHING:
             return { ...state, isFetching: true };
+        case COUPON_CODE_CANCEL: {
+            let outputValue = null
+            state.coupon = null
+            outputValue = calculatorPrice(state.cartItems, state.coupon)
+            return Object.assign(
+                {},
+                state,
+                {
+                    total: outputValue.total,
+                    totalPrice: outputValue.finalPrice,
+                    totalDiscount: outputValue.totalDiscount
+                }
+            )
+        }
         case COUPON_CODE_SUCCESS:
             return {
                 ...state,
@@ -190,23 +141,27 @@ export default cartReducer = (state = INITIAL_STATE, action) => {
                                         status: -99
                                     }
                                 }
+                            } else {
+                                let outputValue = calculatorPrice(state.cartItems, coupon)
+                                return {
+                                    ...state,
+                                    total: outputValue.total,
+                                    totalDiscount: outputValue.totalDiscount,
+                                    totalPrice: outputValue.finalPrice,
+                                    coupon: outputValue.coupon,
+                                    handleCouponError: null
+                                }
                             }
                         }
                         else {
-                            const couponAmount = parseFloat(coupon.amount);
-                            const finalPrice = coupon.discount_type == 'percent' ?
-                                state.totalPrice - (state.totalPrice * couponAmount / 100.0) : state.totalPrice - couponAmount;
-                            state.cartItems.map((item) => {
-                                if (item.price != undefined) {
-                                    const totalAfterDiscounts = coupon.discount_type === 'percent' ?
-                                        item.price - (item.price * couponAmount / 100.0) : item.price - couponAmount;
-                                    item.total = `${totalAfterDiscounts}`;
-                                }
-                            });
+                            let outputValue = calculatorPrice(state.cartItems, coupon)
                             return {
                                 ...state,
-                                totalPrice: finalPrice,
-                                coupon: coupon
+                                total: outputValue.total,
+                                totalDiscount: outputValue.totalDiscount,
+                                totalPrice: outputValue.finalPrice,
+                                coupon: outputValue.coupon,
+                                handleCouponError: null
                             }
                         }
                     }

@@ -38,6 +38,13 @@ export const createNewOrder = (orderInfo) => async (dispatch) => {
                         resData: response
                     }
                 })
+                await AsyncStorage.removeItem('pmvcart', (error) => {
+                    if (!error) {
+                        dispatch({
+                            type: EMPTY_CART_ITEM
+                        })
+                    }
+                })
             }
             else {
                 dispatch({
@@ -75,13 +82,13 @@ export const createNewOrder = (orderInfo) => async (dispatch) => {
 
 export const successPayment = () => async (dispatch) => {
     try {
-        await AsyncStorage.removeItem('pmvcart', (error) => {
-            if (!error) {
-                dispatch({
-                    type: EMPTY_CART_ITEM
-                })
-            }
-        })
+        // await AsyncStorage.removeItem('pmvcart', (error) => {
+        //     if (!error) {
+        //         dispatch({
+        //             type: EMPTY_CART_ITEM
+        //         })
+        //     }
+        // })
         dispatch({ type: SUCCESS_PAYMENT });
     } catch (error) {
         console.error(error);
@@ -133,9 +140,9 @@ export const fetchProductVariations = (id) => async (dispatch) => {
     }
 }
 
-export const fetchingOrders = (status) => (dispatch) => {
+export const fetchingOrders = (status, n_page) => (dispatch) => {
     dispatch({ type: FETCH_ORDERS_PENDING });
-    WooAPI.getOrders(711, status)
+    WooAPI.getOrders(711, status, n_page)
         .then((response) => {
             if (response !== undefined) {
                 dispatch({

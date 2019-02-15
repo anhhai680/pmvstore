@@ -11,7 +11,7 @@ export default WooCommerceAPI;
 
 function WooCommerceAPI(opt) {
   if (!(this instanceof WooCommerceAPI)) {
-    return new WooCommerceAPI(opt);
+    return new WooCommerceAPI(opt); 
   }
 
   opt = opt || {};

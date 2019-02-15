@@ -33,14 +33,14 @@ export default class OrderDetail extends Component {
                         <Text>Địa chỉ: {order.billing.address_1}</Text>
                         <Text>Điện thoại: {order.billing.phone}</Text>
                         <Text>Email: {order.billing.email}</Text>
-                        <Text>Thành phố:
+                        <Text>Thành phố: 
                         {
-                                Object.keys(Constants.arrCities).map(key => {
-                                    if (key === order.billing.city) {
-                                        return Constants.arrCities[key]
-                                    }
-                                })
-                            }
+                            Object.keys(Constants.arrCities).map(key => {
+                                if (key === order.billing.city) {
+                                    return Constants.arrCities[key]
+                                }
+                            })
+                        }
                         </Text>
                     </Body>
                 </CardItem>
@@ -59,19 +59,24 @@ export default class OrderDetail extends Component {
     }
 
     renderCouponLines = (order) => {
-        if (order.coupon_lines === null) return null;
-        const { coupon } = order;
-        let discount = coupon.discount_type === 'percent' ? `${Number(coupon.amount)}%` : Number(coupon.amount).toLocaleString(
-            'vi-VN', {
-                style: 'currency', currency: 'VND', currencyDisplay: 'đ'
-            }
-        );
+        if (order === null) return null;
+        let coupon = order.coupon_lines[0];
+        if (coupon === undefined) return null;
+        // let discount = Number(order.coupon_lines[0].discount).toLocaleString(
+        //     'vi-VN', {
+        //         style: 'currency', currency: 'VND', currencyDisplay: 'đ'
+        //     }
+        // );
         return (
             <Card>
                 <CardItem>
                     <Body>
                         <Text>Mã giảm giá: {coupon.code}</Text>
-                        <Text>Chiết khấu: {discount}</Text>
+                        <NumberFormat value={coupon.discount} displayType={'text'} thousandSeparator={true}
+                            renderText={
+                                value => <Text>Chiết khấu: {value} đ</Text>
+                            }
+                        />
                     </Body>
                 </CardItem>
             </Card>
@@ -121,7 +126,7 @@ export default class OrderDetail extends Component {
                 </Header>
                 <Content>
                     {this.renderOrderInfos(order)}
-                    {/* {this.renderCouponLines(order)} */}
+                    {this.renderCouponLines(order)}
                     {this.renderOrderDetailContent(order.line_items)}
                     {this.renderOptionalInfos(order)}
                 </Content>

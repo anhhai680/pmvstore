@@ -54,14 +54,14 @@ class FinishOrder extends Component {
                         <Text>Địa chỉ: {order.billing.address_1}</Text>
                         <Text>Điện thoại: {order.billing.phone}</Text>
                         <Text>Email: {order.billing.email}</Text>
-                        <Text>Thành phố:
+                        <Text>Thành phố: 
                         {
-                                Object.keys(Constants.arrCities).map(key => {
-                                    if (key === order.billing.city) {
-                                        return Constants.arrCities[key]
-                                    }
-                                })
-                            }</Text>
+                            Object.keys(Constants.arrCities).map(key => {
+                                if (key === order.billing.city) {
+                                    return Constants.arrCities[key]
+                                }
+                            })
+                        }</Text>
                     </Body>
                 </CardItem>
                 <CardItem>
@@ -199,7 +199,7 @@ class FinishOrder extends Component {
             'Thông báo',
             'Cảm ơn quý khách đã đặt hàng. Nhân viên chúng tôi sẽ liên hệ quý khách trong thời gian sớm nhất. Mọi thông tin xin vui lòng liên hệ 19006037',
             [
-                { text: 'OK', onPress: () => this.props.successPayment() },
+                { text: 'OK', onPress: () => { this.props.successPayment(); } },
                 { text: 'CANCEL', onPress: () => console.log('Cancel Pressed'), style: 'cancel' }
             ],
             { cancelable: false }

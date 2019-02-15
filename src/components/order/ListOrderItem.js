@@ -9,23 +9,26 @@ class ListOrderItem extends Component {
 
     render() {
         const { item, products, isDetail } = this.props;
-        const image = products.filter(p => p.id === item.product_id);
+        var imagesrc = products.filter(p => p.id === item.product_id);
         return (
             <Card>
                 <CardItem>
                     <View style={styles.content}>
-                        <Image source={{ uri: image[0].images[0].src }}
-                            style={styles.productImage} />
+                        {
+                            isDetail ?
+                                <Image source={{ uri: imagesrc[0].images[0].src }}
+                                    style={styles.productImage} /> : null
+                        }
                         <View style={styles.content2}>
                             <Text style={styles.productName}>{item.name}</Text>
                             <Text style={styles.amountproduct}>SL: {item.quantity}</Text>
                             <View style={styles.content}>
-                                <NumberFormat value={item.price} displayType={'text'} thousandSeparator={true}
+                                <NumberFormat value={item.subtotal / item.quantity} displayType={'text'} thousandSeparator={true}
                                     renderText={
                                         value => <Text style={styles.priceproduct}>Giá: {value} đ</Text>
                                     }
                                 />
-                                <NumberFormat value={item.total} displayType={'text'} thousandSeparator={true}
+                                <NumberFormat value={item.subtotal} displayType={'text'} thousandSeparator={true}
                                     renderText={
                                         value => <Text style={styles.priceTotalproduct}>TT: {value} đ</Text>
                                     }
