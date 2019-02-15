@@ -9,6 +9,7 @@ import { Home, About, Cart, Checkout, FinishOrder, Product, List, Notifications,
 import { addListener } from "../redux/ReduxNavigation";
 import IconBadge from "../components/IconBadge";
 
+
 export const OrderStack = StackNavigator(
     {
         Cart: {
@@ -134,7 +135,7 @@ export const Main = StackNavigator({
                 tabBarComponent: TabBarBottom,
                 tabBarPosition: 'bottom',
                 animationEnabled: true,
-                swipeEnabled: false,
+                swipeEnabled: true,
                 lazy: true
             }
         ),
