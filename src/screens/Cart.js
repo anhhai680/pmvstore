@@ -9,7 +9,6 @@ import { updateCartItem, deleteCartItem, getCouponCodes, checkCouponCode, cancel
 import * as CartComponent from "../components/cart";
 import CouponCode from "../components/cart/couponCode";
 
-
 class Cart extends Component {
 
     constructor(props) {
@@ -135,7 +134,7 @@ class Cart extends Component {
                 <Header>
                     <Left>
                         <TouchableOpacity onPress={() => this.props.navigation.goBack(null)}>
-                            <Ionicons name='ios-close' size={38} />
+                            <Ionicons name='ios-close' size={38} style={{ color: '#FFF' }} />
                         </TouchableOpacity>
                     </Left>
                     <Body>
@@ -144,15 +143,21 @@ class Cart extends Component {
                     <Right />
                 </Header>
                 <Content>
-                    <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+                    <View style={styles.backgroundStepOrder}>
                         <View style={styles.rounded_box}>
-                            <Text style={styles.tabactived}>1</Text>
+                            <View style={styles.view_line_box}>
+                                <View style={styles.line_box} />
+                            </View>
+                            <View style={styles.view_tab}>
+                                <Text style={styles.tabactived}>1</Text>
+                                <Text style={styles.tabinactived}>2</Text>
+                                <Text style={styles.tabinactived}>3</Text>
+                            </View>
                         </View>
-                        <View style={styles.rounded_box}>
-                            <Text style={styles.tabinactived}>2</Text>
-                        </View>
-                        <View style={styles.rounded_box}>
-                            <Text style={styles.tabinactived}>3</Text>
+                        <View style={styles.view_text}>
+                            <Text style={styles.textLeft}>Giỏ hàng</Text>
+                            <Text style={styles.textCenter}>Thanh toán</Text>
+                            <Text style={styles.textRight}>Hoàn tất</Text>
                         </View>
                     </View>
                     <List
@@ -178,8 +183,8 @@ class Cart extends Component {
                                 </Body>
                                 <Right>
                                     <View style={{ flex: 1, width: 50, justifyContent: 'center' }}>
-                                        <CartComponent.quantityItems pId={item.product_id} selectedValue={item.quantity} 
-                                        variationid={item.variation_id} onValueChange={this.updateQuantityCartItem} />
+                                        <CartComponent.quantityItems pId={item.product_id} selectedValue={item.quantity}
+                                            variationid={item.variation_id} onValueChange={this.updateQuantityCartItem} />
                                     </View>
                                     <View style={{ position: 'absolute', top: -15, right: 2 }}>
                                         <TouchableOpacity onPress={() => this.deleteProductInCart(item.product_id, item.variation_id)}>
@@ -196,50 +201,65 @@ class Cart extends Component {
                         }
                         rightOpenValue={-75}
                     />
+                    <Card>
+                        <CardItem>
+                            <Body>
+                                <CouponCode onCouponChangeText={this.onCouponChangeText}
+                                    coupon={coupon}
+                                    onCancelCoupon={this.onCancelCoupon} />
+                            </Body>
+                        </CardItem>
+                    </Card>
                     {
-                        this.props.couponCodes.length > 0 ?
+                        this.props.totalDiscount > 0 ?
                             <Card>
                                 <CardItem>
-                                    <Body>
-                                        <CouponCode onCouponChangeText={this.onCouponChangeText}
-                                            coupon={coupon}
-                                            onCancelCoupon={this.onCancelCoupon} />
-                                    </Body>
+                                    <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
+                                        <Text>Tiền giảm: </Text>
+                                        <NumberFormat value={(this.props.totalDiscount)} displayType={'text'} thousandSeparator={true}
+                                            renderText={
+                                                value => <Text>-{value} đ</Text>
+                                            }
+                                        />
+                                    </View>
                                 </CardItem>
                             </Card>
-                            :
-                            null
+                            : null
                     }
+                    < Card >
+                        <CardItem>
+                            <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
+                                <Text>Tổng tạm tính: </Text>
+                                <NumberFormat value={(this.props.totalDiscount + this.props.totalPrice)} displayType={'text'} thousandSeparator={true}
+                                    renderText={
+                                        value => <Text>{value} đ</Text>
+                                    }
+                                />
+                            </View>
+                        </CardItem>
+                    </Card>
                 </Content>
-                <Footer style={{ backgroundColor: '#FF891E' }}>
+                <Footer style={{ backgroundColor: '#FBFBFB' }}>
                     <Left style={{ marginLeft: 10 }}>
-                        <View style={{ flex: 1 }}>
+                        <View style={{ flex: 1, justifyContent: 'center' }}>
                             <View style={{ flexDirection: 'row' }}>
-                                <Text style={{ color: '#fff', fontWeight: 'bold' }}>TT: </Text>
+                                <Text>Thành tiền: </Text>
                                 <NumberFormat value={(this.props.totalPrice)} displayType={'text'} thousandSeparator={true}
                                     renderText={
-                                        value => <Text style={{ color: '#fff', fontWeight: 'bold' }}>{value} đ</Text>
+                                        value => <Text style={styles.price}>{value} đ</Text>
                                     }
                                 />
                             </View>
                             <View style={{ flexDirection: 'row' }}>
-                                <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 12 }}>Tiền giảm: </Text>
-                                <NumberFormat value={(this.props.totalDiscount)} displayType={'text'} thousandSeparator={true}
-                                    renderText={
-                                        value => <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 12 }}>{value} đ</Text>
-                                    }
-                                />
-                            </View>
-                            <View style={{ flexDirection: 'row' }}>
-                                <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 12 }}>Số lượng: </Text>
-                                <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 12 }}>{this.props.total}</Text>
+                                <Text>Số lượng: </Text>
+                                <Text>{this.props.total}</Text>
                             </View>
                         </View>
                     </Left>
                     <Right>
                         <Button large style={styles.button} onPress={() => this.props.navigation.navigate('Checkout')}>
-                            <Text style={{ fontWeight: 'bold', fontSize: 16 }}>Thanh toán</Text>
-                            <Icon name="ios-arrow-forward" style={{ color: '#fff' }} />
+                            <Text style={{ fontSize: 14 }}>Thanh toán</Text>
+                            <Icon name="ios-arrow-forward" style={{ color: '#FFF' }} />
                         </Button>
                     </Right>
                 </Footer>
@@ -283,23 +303,22 @@ var styles = StyleSheet.create({
         color: '#FFF',
         fontSize: 16
     },
+    price: {
+        color: '#FD842B'
+    },
     productName: {
         flex: 1,
         fontSize: 14,
-        fontWeight: 'bold',
-        color: '#FF8000',
     },
     productImage: {
         flex: 1,
-        // justifyContent: 'center',
-        // alignItems: 'center',
         width: 75,
         height: 75,
         marginLeft: 5
     },
     quantity: {
         borderWidth: 1,
-        borderColor: '#cdcdcd',
+        borderColor: '#CDCDCD',
         backgroundColor: '#EAF2F4',
         textAlign: 'center',
         borderRadius: 5,
@@ -307,25 +326,10 @@ var styles = StyleSheet.create({
         paddingLeft: 10,
         paddingRight: 10
     },
-    quantityButton: {
-        backgroundColor: '#000',
-        padding: 5,
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
     button: {
-        backgroundColor: '#01509B',
+        backgroundColor: '#3F51B5',
         borderTopLeftRadius: 50,
         borderBottomLeftRadius: 50
-    },
-    buttonText: {
-        color: 'white',
-        textAlign: 'center',
-        fontWeight: 'bold',
-        fontSize: 14
-    },
-    price: {
-        color: '#01509B'
     },
     notification: {
         justifyContent: 'center',
@@ -337,27 +341,68 @@ var styles = StyleSheet.create({
         width: 35,
         height: 35,
         borderRadius: 20,
-        backgroundColor: '#ff891e',
+        backgroundColor: '#FD842B',
         textAlign: 'center',
+        fontSize: 17,
         alignItems: 'center',
         justifyContent: 'center',
         paddingTop: 6,
-        fontWeight: 'bold',
-        color: '#fff'
+        color: '#FFF',
     },
     tabinactived: {
         width: 35,
         height: 35,
         borderRadius: 20,
-        backgroundColor: '#fff',
-        borderWidth: 1,
-        borderColor: '#B2B2B2',
+        backgroundColor: '#FFF',
         textAlign: 'center',
+        fontSize: 17,
         alignItems: 'center',
         justifyContent: 'center',
-        paddingTop: 6
+        paddingTop: 6,
+        borderWidth: 1,
+        borderColor: '#FD842B',
+        color: '#FD842B',
+    },
+    view_line_box: {
+        position: 'absolute',
+        flexDirection: 'row',
+        justifyContent: 'center',
+    },
+    line_box: {
+        flex: 1,
+        backgroundColor: '#FD842B',
+        height: 10,
+        borderRadius: 30,
+    },
+    view_tab: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
     },
     rounded_box: {
-        margin: 20
+        justifyContent: 'center',
+        marginTop: 10,
+        marginLeft: 30,
+        marginRight: 30,
+    },
+    view_text: {
+        justifyContent: 'space-between',
+        marginLeft: 30,
+        marginRight: 30,
+        marginBottom: 10,
+        flexDirection: 'row',
+    },
+    textCenter: {
+        fontSize: 15,
+    },
+    textLeft: {
+        fontSize: 15,
+        marginLeft: -10,
+    },
+    textRight: {
+        fontSize: 15,
+        marginRight: -10,
+    },
+    backgroundStepOrder: {
+        backgroundColor: '#FBFBFB',
     }
 });

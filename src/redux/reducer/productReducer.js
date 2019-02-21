@@ -7,7 +7,6 @@ import {
     PRODUCT_QUANTITY_CHANGED,
     PRODUCT_VARIATIONS_SUCCESS,
     PRODUCT_VARIATIONS_FAILURE,
-    PRODUCT_VARIATIONS_REQUEST
 } from "../constants/actionTypes";
 
 const INITIAL_STATE = {
@@ -63,17 +62,19 @@ export default (state = INITIAL_STATE, action) => {
                 productQuantity: action.payload.productQuantity
             };
         }
-        case PRODUCT_VARIATIONS_SUCCESS:
+        case PRODUCT_VARIATIONS_SUCCESS: {
             return {
                 ...state,
                 isLoading: false,
                 productVariations: action.payload.data
             };
-        case PRODUCT_VARIATIONS_FAILURE:
+        }
+        case PRODUCT_VARIATIONS_FAILURE:{
             return {
                 ...state,
                 isLoading: false
-            }
+            };
+        }
         default:
             return { ...state };
     }

@@ -39,7 +39,7 @@ class Orders extends Component {
                 <Header>
                     <Left>
                         <TouchableOpacity onPress={() => this.props.navigation.goBack(null)}>
-                            <Ionicons name='ios-close' size={38} />
+                            <Ionicons name='ios-close' size={38} style={{ color: '#FFF' }} />
                         </TouchableOpacity>
                     </Left>
                     <Body>

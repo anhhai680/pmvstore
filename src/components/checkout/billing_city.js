@@ -47,8 +47,8 @@ export default class billing_city extends Component {
             fields: {
                 last_name: {
                     //label: 'Tên',
-                    placeholder: 'Họ & Tên',
-                    error: 'Họ & Tên không hợp lệ',
+                    placeholder: 'Họ & tên',
+                    error: 'Họ & tên không hợp lệ',
                     maxLength: 100
                 },
                 phone: {
@@ -190,15 +190,6 @@ export default class billing_city extends Component {
 }
 
 var styles = StyleSheet.create({
-    container: {
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    title: {
-        fontSize: 30,
-        alignSelf: 'center',
-        marginBottom: 30
-    },
     buttonText: {
         fontSize: 18,
         color: 'white',
@@ -206,17 +197,11 @@ var styles = StyleSheet.create({
     },
     button: {
         height: 36,
-        backgroundColor: '#008000',
-        borderColor: '#48BBEC',
-        borderWidth: 1,
+        backgroundColor: '#3F51B5',
         borderRadius: 8,
         marginBottom: 10,
         marginTop: 10,
         alignSelf: 'stretch',
         justifyContent: 'center'
     },
-    selectStyle: {
-        borderColor: '#48BBEC',
-        borderWidth: 1
-    }
 });

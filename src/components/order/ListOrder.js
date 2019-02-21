@@ -50,26 +50,28 @@ export default class ListOrder extends Component {
                             />
                         </Content>
                         <Footer style={styles.footer}>
-                            <Left>
-                                <View style={{ flexDirection: 'row', marginLeft: 5 }}>
-                                    <Text style={styles.footerText}>KM: </Text>
-                                    <NumberFormat value={item.discount_total} displayType={'text'} thousandSeparator={true}
-                                        renderText={
-                                            value => <Text style={styles.priceTotal}>{value} đ</Text>
-                                        }
-                                    />
-                                </View>
-                            </Left>
-                            <Right>
-                                <View style={{ flexDirection: 'row', marginRight: 5 }}>
-                                    <Text style={styles.footerText}>Tổng cộng: </Text>
+                            <View style={{ flex: 1, marginHorizontal: 20, justifyContent: 'center' }}>
+                                {
+                                    item.discount_total > 0 ?
+                                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                                            <Text>Giảm giá: </Text>
+                                            <NumberFormat value={item.discount_total} displayType={'text'} thousandSeparator={true}
+                                                renderText={
+                                                    value => <Text>-{value} đ</Text>
+                                                }
+                                            />
+                                        </View>
+                                        : null
+                                }
+                                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                                    <Text>Thành tiền: </Text>
                                     <NumberFormat value={item.total} displayType={'text'} thousandSeparator={true}
                                         renderText={
                                             value => <Text style={styles.priceTotal}>{value} đ</Text>
                                         }
                                     />
                                 </View>
-                            </Right>
+                            </View>
                         </Footer>
                     </View >
                 </CardItem>
@@ -81,7 +83,7 @@ export default class ListOrder extends Component {
 
 const styles = StyleSheet.create({
     header: {
-        backgroundColor: '#008000',
+        backgroundColor: '#3F51B5',
     },
     headerText: {
         color: '#fff',
@@ -93,24 +95,10 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontWeight: '500'
     },
-    cancelText: {
-        color: '#f00',
-        fontWeight: 'bold'
-    },
-    completedText: {
-        color: '#00f',
-        fontWeight: 'bold'
-    },
     footer: {
         backgroundColor: '#fff',
-        height: 30,
-        marginHorizontal: 2
-    },
-    footerText: {
-        fontWeight: 'bold'
     },
     priceTotal: {
-        color: '#008000',
-        fontWeight: 'bold'
+        color: '#FD842B'
     },
 });

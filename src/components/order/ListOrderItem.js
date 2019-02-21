@@ -20,17 +20,15 @@ class ListOrderItem extends Component {
                                     style={styles.productImage} /> : null
                         }
                         <View style={styles.content2}>
-                            <Text style={styles.productName}>{item.name}</Text>
-                            <Text style={styles.amountproduct}>SL: {item.quantity}</Text>
+                            <Text>{item.name}</Text>
                             <View style={styles.content}>
                                 <NumberFormat value={item.subtotal / item.quantity} displayType={'text'} thousandSeparator={true}
                                     renderText={
-                                        value => <Text style={styles.priceproduct}>Giá: {value} đ</Text>
-                                    }
-                                />
-                                <NumberFormat value={item.subtotal} displayType={'text'} thousandSeparator={true}
-                                    renderText={
-                                        value => <Text style={styles.priceTotalproduct}>TT: {value} đ</Text>
+                                        value =>
+                                            <View style={{ flexDirection: 'row' }}>
+                                                <Text style={styles.priceproduct}>{value} đ</Text>
+                                                <Text> x {item.quantity}</Text>
+                                            </View>
                                     }
                                 />
                             </View>
@@ -69,29 +67,15 @@ const styles = StyleSheet.create({
     },
     content: {
         flex: 1,
+        flexDirection: 'row' ,
         justifyContent: 'space-between',
-        flexDirection: 'row',
-    },
-    productName: {
-        fontSize: 14,
-        fontWeight: 'bold',
-        color: '#ff8000'
     },
     productImage: {
         width: 90,
         height: 90,
         resizeMode: 'contain'
     },
-    amountproduct: {
-        fontSize: 11,
-        fontWeight: '200',
-        marginVertical: 5
-    },
     priceproduct: {
-        fontSize: 11,
-        fontWeight: '200'
-    },
-    priceTotalproduct: {
-        fontWeight: '400'
+        color: '#FD842B'
     },
 })

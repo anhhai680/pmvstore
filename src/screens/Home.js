@@ -131,7 +131,7 @@ class Home extends Component {
                 </Header> */}
                 <Content>
                     <BannerSlider />
-                    <Button full style={{ backgroundColor: "#0076CC", marginTop: 5, marginBottom: 20 }}
+                    <Button full style={{ backgroundColor: "#3F51B5", marginTop: 5, marginBottom: 20 }}
                         onPress={() => {
                             Linking.canOpenURL('tel:19006037').then(supported => {
                                 if (!supported) {
