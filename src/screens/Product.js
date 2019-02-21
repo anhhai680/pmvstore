@@ -8,6 +8,7 @@ import { NavigationActions } from 'react-navigation'
 import { WooAPI } from '../services/WooAPI';
 import * as productCom from '../components/product/';
 import * as cart from '../components/cart';
+import { ProductGrid } from '../components/product';
 
 import { addCartItem } from '../redux/actions/cartAction';
 import { getProductAttributeTerms, getProductVariations } from '../redux/actions/productAction';
@@ -42,6 +43,7 @@ class Product extends Component {
         };
         this.getProduct = this.getProduct.bind(this);
         this.getProductVariations = this.getProductVariations.bind(this);
+        this.renderRelatedProducts = this.renderRelatedProducts.bind(this);
         this.renderProductVariations = this.renderProductVariations.bind(this);
         this.temColorChanged = this.temColorChanged.bind(this);
         this.inkColorChanged = this.inkColorChanged.bind(this)
@@ -184,8 +186,8 @@ class Product extends Component {
 
     inkColorChanged = (color) => {
         const { productVariations } = this.props;
-        if (productVariations !== null && productVariations !== undefined){
-            if (productVariations.length > 0){
+        if (productVariations !== null && productVariations !== undefined) {
+            if (productVariations.length > 0) {
                 productVariations.map((item, index) => {
                     item.attributes.map((attr) => {
                         if (attr.option === color) {
@@ -306,6 +308,32 @@ class Product extends Component {
         )
     }
 
+    renderRelatedProducts = () => {
+        let relatedIdProducts = this.state.product.related_ids;
+        let products = this.props.products;
+        if (relatedIdProducts.length > 0) {
+            let relatedProducts = [];
+            products.map(itemProduct => {
+                relatedIdProducts.map(itemRelated => {
+                    if (itemProduct.id == itemRelated) {
+                        relatedProducts.push(itemProduct)
+                    }
+                })
+            });
+            if (relatedProducts.length <= 0) return null;
+            return (
+                <Card>
+                    <CardItem header>
+                        <Text>Sản phẩm liên quan</Text>
+                    </CardItem>
+                    <CardItem cardBody>
+                        <ProductGrid products={relatedProducts} navigation={this.props.navigation} />
+                    </CardItem>
+                </Card>
+            );
+        }
+    }
+
     render() {
         if (this.state.product == null) {
             return (
@@ -362,6 +390,7 @@ class Product extends Component {
                             <productCom.ProductAttributes attributes={this.state.attributes} />
                         </Tab>
                     </Tabs>
+                    {this.renderRelatedProducts()}
                 </Content>
                 <cart.addCart product={this.state.product} addProductToCartItem={this.addProductToCartItem} />
                 {/* <KeyboardAvoidingView behavior='padding' keyboardVerticalOffset={100}>

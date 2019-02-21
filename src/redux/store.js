@@ -11,25 +11,27 @@ import reducers from './reducer';
 const thunkMiddleware = [thunk];
 const store = null;
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-const persistConfig = {
-  key: 'root',
-  storage,
-  blacklist: ['navigation'] // navigation will not be persisted
-}
+// const persistConfig = {
+//   key: 'root',
+//   storage,
+//   blacklist: ['navigation'] // navigation will not be persisted
+// }
 
-const persistedReducer = persistReducer(persistConfig, reducers);
+// const persistedReducer = persistReducer(persistConfig, reducers);
 
 if (__DEV__) {
   store = Reactotron.createStore(
-    //reducers,
-    persistedReducer,
+    reducers,
+    //persistedReducer,
     compose(
       applyMiddleware(...thunkMiddleware)
     )
   );
 } else {
-  store = createStore(persistedReducer, {}, compose(applyMiddleware(...thunkMiddleware)));
+  store = createStore(reducers, {}, compose(applyMiddleware(...thunkMiddleware)));
+  //store = createStore(persistedReducer, {}, compose(applyMiddleware(...thunkMiddleware)));
 }
-let persistor = persistStore(store);
+//let persistor = persistStore(store);
 
-export default { store, persistor }
+export default store;
+//export default { store, persistor }

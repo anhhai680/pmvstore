@@ -6,7 +6,8 @@ import firebase from 'react-native-firebase';
 import type { Notification, NotificationOpen } from 'react-native-firebase';
 import { PersistGate } from 'redux-persist/integration/react';
 
-import ReduxConfig from './src/redux/store';
+import store from './src/redux/store';
+//import ReduxConfig from './src/redux/store';
 import AppWithNavigationState from './src/navigators/AppRouter';
 
 import SlashScreen from "./src/screens/Slash";
@@ -163,13 +164,15 @@ export default class App extends Component {
       )
     }
     return (
-      <Provider store={ReduxConfig.store}>
-        <PersistGate loading={<LoadingScreen />} persistor={ReduxConfig.persistor}>
+      // <Provider store={ReduxConfig.store}>
+      //   <PersistGate loading={<LoadingScreen />} persistor={ReduxConfig.persistor}>
+      <Provider store={store}>
           <Root>
             <AppWithNavigationState />
           </Root>
-        </PersistGate>
       </Provider>
+      //   </PersistGate>
+      // </Provider>
     );
   }
 }

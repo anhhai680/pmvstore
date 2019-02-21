@@ -8,7 +8,7 @@ const API = new WooCommerceAPI({
   consumerKey: Config.Key,
   consumerSecret: Config.Secret,
   wp_api: true,
-  version: 'wc/v2',
+  version: 'wc/v3',
   queryStringAuth: true,
 });
 
