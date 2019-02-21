@@ -130,12 +130,12 @@ export const Main = StackNavigator({
                 tabBarOptions: {
                     activeTintColor: 'tomato',
                     inactiveTintColor: 'gray',
-                    showIcon: true
+                    showIcon: true,
                 },
                 tabBarComponent: TabBarBottom,
                 tabBarPosition: 'bottom',
                 animationEnabled: true,
-                swipeEnabled: true,
+                swipeEnabled: false,
                 lazy: true
             }
         ),
