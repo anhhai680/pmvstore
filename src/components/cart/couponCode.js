@@ -70,18 +70,27 @@ export default class couponCode extends Component {
         const { coupon } = this.props;
         return (
             <View style={styles.container}>
-                <TextInput
-                    ref={input => { this.textInput = input }}
-                    value={this.state.couponCode}
-                    onChangeText={(value) => this.setState({ couponCode: value })}
-                    //onFocus={() => this.onTextFocused()}
-                    maxLength={10}
-                    multiline={false}
-                    underlineColorAndroid='transparent'
-                    style={styles.textInput}
-                    placeholder="Nhập mã giảm giá"
-                    placeholderTextColor='#cdcdcd'
-                />
+                <View style={{ flex: 1 }}>
+                    <View style={{ borderBottomWidth: 1, borderColor: '#DBDBDB' }}>
+                        <TextInput
+                            ref={input => { this.textInput = input }}
+                            value={this.state.couponCode}
+                            onChangeText={(value) => this.setState({ couponCode: value })}
+                            //onFocus={() => this.onTextFocused()}
+                            maxLength={10}
+                            multiline={false}
+                            underlineColorAndroid='transparent'
+                            style={styles.textInput}
+                            placeholder="Nhập mã giảm giá"
+                            placeholderTextColor='#7D7D7D'
+                        />
+                    </View>
+                    <Text style={{ fontSize: 9, fontStyle: 'italic' }}>
+                        Hãy áp dụng 
+                        <Text style={{ fontSize: 10, fontWeight: '900', color: '#FD842B' }}> mã giảm giá </Text>
+                        để được nhận ưu đãi.
+                    </Text>
+                </View>
                 <TouchableOpacity style={styles.buttonApply} onPress={() => this.onPressApplyButton()}>
                     <Text style={styles.textButton}>Áp dụng</Text>
                 </TouchableOpacity>
@@ -105,17 +114,16 @@ const styles = StyleSheet.create({
     },
     textInput: {
         flex: 1,
-        borderWidth: 1,
-        borderColor: '#808080',
         borderRadius: 4,
-        textAlign: 'center',
+        borderBottomWidth: 1,
+        textAlign: 'left',
         padding: 2,
-        height: 30,
+        height: 20,
         justifyContent: 'center',
         alignItems: 'center'
     },
     buttonApply: {
-        backgroundColor: '#01509B',
+        backgroundColor: '#FD842B',
         borderRadius: 5,
         width: 100,
         height: 30,
@@ -124,7 +132,7 @@ const styles = StyleSheet.create({
         marginLeft: 5
     },
     buttonCancel: {
-        backgroundColor: '#01509B',
+        backgroundColor: '#FD842B',
         borderRadius: 5,
         width: 50,
         height: 30,
@@ -138,6 +146,5 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         textAlign: 'center',
         color: '#FFF',
-        //fontWeight: 'bold'
     }
 });

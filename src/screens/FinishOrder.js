@@ -14,7 +14,7 @@ class FinishOrder extends Component {
     constructor(props) {
         super(props);
         this.renderProductAttributes = this.renderProductAttributes.bind(this);
-        this.renderCouponLines = this.renderCouponLines.bind(this);
+        this.renderPriceAndCoupon = this.renderPriceAndCoupon.bind(this);
         this.renderProducts = this.renderProducts.bind(this);
         this.renderOrderInfos = this.renderOrderInfos.bind(this);
         this.renderOptionalInfos = this.renderOptionalInfos.bind(this);
@@ -54,44 +54,49 @@ class FinishOrder extends Component {
                         <Text>Địa chỉ: {order.billing.address_1}</Text>
                         <Text>Điện thoại: {order.billing.phone}</Text>
                         <Text>Email: {order.billing.email}</Text>
-                        <Text>Thành phố: 
+                        <Text>Thành phố:
                         {
-                            Object.keys(Constants.arrCities).map(key => {
-                                if (key === order.billing.city) {
-                                    return Constants.arrCities[key]
-                                }
-                            })
-                        }</Text>
-                    </Body>
-                </CardItem>
-                <CardItem>
-                    <Body>
-                        <NumberFormat value={order.total} displayType={'text'} thousandSeparator={true}
-                            renderText={
-                                value => <Text style={styles.price}>Tổng cộng: {value}đ</Text>
-                            }
-                        />
+                                Object.keys(Constants.arrCities).map(key => {
+                                    if (key === order.billing.city) {
+                                        return Constants.arrCities[key]
+                                    }
+                                })
+                            }</Text>
                     </Body>
                 </CardItem>
             </Card>
         )
     }
 
-    renderCouponLines = () => {
-        if (this.props.coupon === null) return null;
-        const { coupon } = this.props;
-        let discount = coupon.discount_type === 'percent' ? `${Number(coupon.amount)}%` : Number(coupon.amount).toLocaleString(
-            'vi-VN', {
-                style: 'currency', currency: 'VND', currencyDisplay: 'đ'
-            }
-        );
+    renderPriceAndCoupon = (order) => {
+        if (order === null) return null;
+        let coupon = order.coupon_lines[0];
+        if (coupon === undefined) return null;
         return (
             <Card>
                 <CardItem>
-                    <Body>
-                        <Text>Mã giảm giá: {coupon.code}</Text>
-                        <Text>Chiết khấu: {discount}</Text>
-                    </Body>
+                    <View style={{ flex: 1 }}>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                            <Text>Mã giảm giá: </Text>
+                            <Text>{coupon.code}</Text>
+                        </View>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                            <Text>Giảm giá: </Text>
+                            <NumberFormat value={coupon.discount} displayType={'text'} thousandSeparator={true}
+                                renderText={
+                                    value => <Text>-{value} đ</Text>
+                                }
+                            />
+                        </View>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                            <Text>Tổng tạm tính: </Text>
+                            <NumberFormat value={(parseFloat(order.total) + parseFloat(order.discount_total))} displayType={'text'} thousandSeparator={true}
+                                renderText={
+                                    value => <Text>{value} đ</Text>
+                                }
+                            />
+                        </View>
+                    </View>
                 </CardItem>
             </Card>
         )
@@ -114,7 +119,7 @@ class FinishOrder extends Component {
                                 <Text style={styles.productName}>{item.name}</Text>
                                 <View style={{ flexDirection: 'row' }}>
                                     <View style={{ width: '50%' }}>
-                                        <NumberFormat value={item.total} displayType={'text'} thousandSeparator={true}
+                                        <NumberFormat value={item.subtotal / item.quantity} displayType={'text'} thousandSeparator={true}
                                             renderText={
                                                 value => <Text>Giá: {value}đ</Text>
                                             }
@@ -184,12 +189,19 @@ class FinishOrder extends Component {
     renderOptionalInfos = (order) => {
         return (
             <Card>
-                <CardItem>
-                    <Body>
-                        <Text>Phương thức thanh toán: {order.payment_method_title}</Text>
-                        <Text>Ghi chú: {order.customer_note}</Text>
-                    </Body>
+                <CardItem header>
+                    <View>
+                        <Text>Phương thức thanh toán</Text>
+                        <Text style={{ fontSize: 14, fontWeight: 'normal' }}>{order.payment_method_title}</Text>
+                    </View>
                 </CardItem>
+                {
+                    order.customer_note != '' ?
+                        <CardItem>
+                            <Text>Ghi chú: {order.customer_note}</Text>
+                        </CardItem>
+                    : null
+                }
             </Card>
         )
     }
@@ -213,27 +225,45 @@ class FinishOrder extends Component {
             <Container>
                 <Header>
                     <Body>
-                        <Text style={{ justifyContent: 'center', alignItems: 'center' }}>Hoàn tất</Text>
+                        <Text style={styles.headerText}>Hoàn tất</Text>
                     </Body>
                 </Header>
                 <Content>
-                    <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+                    <View style={styles.backgroundStepOrder}>
                         <View style={styles.rounded_box}>
-                            <Text style={styles.tabinactived}>1</Text>
+                            <View style={styles.view_line_box}>
+                                <View style={styles.line_box} />
+                            </View>
+                            <View style={styles.view_tab}>
+                                <Text style={styles.tabactived}>1</Text>
+                                <Text style={styles.tabactived}>2</Text>
+                                <Text style={styles.tabactived}>3</Text>
+                            </View>
                         </View>
-                        <View style={styles.rounded_box}>
-                            <Text style={styles.tabinactived}>2</Text>
-                        </View>
-                        <View style={styles.rounded_box}>
-                            <Text style={styles.tabactived}>3</Text>
+                        <View style={styles.view_text}>
+                            <Text style={styles.textLeft}>Giỏ hàng</Text>
+                            <Text style={styles.textCenter}>Thanh toán</Text>
+                            <Text style={styles.textRight}>Hoàn tất</Text>
                         </View>
                     </View>
                     {this.renderOrderInfos(order)}
-                    {this.renderCouponLines()}
-                    {this.renderProducts(order.line_items)}
                     {this.renderOptionalInfos(order)}
+                    {this.renderPriceAndCoupon(order)}
+                    <Card>
+                        <CardItem>
+                            <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
+                                <Text>Thành tiền: </Text>
+                                <NumberFormat value={order.total} displayType={'text'} thousandSeparator={true}
+                                    renderText={
+                                        value => <Text style={styles.priceTotal}>{value} đ</Text>
+                                    }
+                                />
+                            </View>
+                        </CardItem>
+                    </Card>
+                    {this.renderProducts(order.line_items)}
                 </Content>
-                <Footer style={{ backgroundColor: '#FFF' }}>
+                <Footer style={{ backgroundColor: '#3F51B5' }}>
                     <TouchableOpacity onPress={() => this.onSuccessPayment()} style={styles.button}>
                         <Text style={styles.textButton}>Quay về màn hình chính</Text>
                     </TouchableOpacity>
@@ -267,48 +297,74 @@ const styles = StyleSheet.create({
         color: 'green',
         marginRight: 5
     },
+    headerText: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        color: '#FFF',
+        fontSize: 16
+    },
     tabactived: {
         width: 35,
         height: 35,
         borderRadius: 20,
-        borderWidth: 1,
-        backgroundColor: '#FF891E',
-        borderColor: '#008000',
+        backgroundColor: '#FD842B',
         textAlign: 'center',
+        fontSize: 17,
         alignItems: 'center',
         justifyContent: 'center',
         paddingTop: 6,
-        fontWeight: 'bold'
+        color: '#FFF',
     },
-    tabinactived: {
-        width: 35,
-        height: 35,
-        borderRadius: 20,
-        borderWidth: 1,
-        backgroundColor: 'gray',
-        borderColor: '#fff',
-        textAlign: 'center',
-        alignItems: 'center',
+    view_line_box: {
+        position: 'absolute',
+        flexDirection: 'row',
         justifyContent: 'center',
-        paddingTop: 6
+    },
+    line_box: {
+        flex: 1,
+        backgroundColor: '#FD842B',
+        height: 10,
+        borderRadius: 30,
+    },
+    view_tab: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
     },
     rounded_box: {
-        margin: 20
+        justifyContent: 'center',
+        marginTop: 10,
+        marginLeft: 30,
+        marginRight: 30,
     },
-    price: {
-        fontWeight: 'bold',
-        color: '#008000'
+    view_text: {
+        justifyContent: 'space-between',
+        marginLeft: 30,
+        marginRight: 30,
+        marginBottom: 10,
+        flexDirection: 'row',
+    },
+    textCenter: {
+        fontSize: 15,
+    },
+    textLeft: {
+        fontSize: 15,
+        marginLeft: -10,
+    },
+    textRight: {
+        fontSize: 15,
+        marginRight: -10,
+    },
+    backgroundStepOrder: {
+        backgroundColor: '#FBFBFB',
+    },
+    priceTotal: {
+        color: '#FD842B',
     },
     button: {
+        flex: 1,
         alignSelf: 'center',
         justifyContent: 'center',
-        height: 36,
-        backgroundColor: '#008000',
-        borderColor: '#48BBEC',
-        borderWidth: 1,
-        borderRadius: 8,
-        marginBottom: 10,
-        width: '90%'
+        backgroundColor: '#3F51B5',
     },
     textButton: {
         color: '#FFF',

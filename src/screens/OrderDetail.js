@@ -33,51 +33,50 @@ export default class OrderDetail extends Component {
                         <Text>Địa chỉ: {order.billing.address_1}</Text>
                         <Text>Điện thoại: {order.billing.phone}</Text>
                         <Text>Email: {order.billing.email}</Text>
-                        <Text>Thành phố: 
+                        <Text>Thành phố:
                         {
-                            Object.keys(Constants.arrCities).map(key => {
-                                if (key === order.billing.city) {
-                                    return Constants.arrCities[key]
-                                }
-                            })
-                        }
-                        </Text>
-                    </Body>
-                </CardItem>
-                <CardItem>
-                    <Body style={{ flexDirection: 'row' }}>
-                        <Text style={styles.footerText}>Tổng cộng: </Text>
-                        <NumberFormat value={order.total} displayType={'text'} thousandSeparator={true}
-                            renderText={
-                                value => <Text style={styles.priceTotal}>{value} đ</Text>
+                                Object.keys(Constants.arrCities).map(key => {
+                                    if (key === order.billing.city) {
+                                        return Constants.arrCities[key]
+                                    }
+                                })
                             }
-                        />
+                        </Text>
                     </Body>
                 </CardItem>
             </Card>
         )
     }
 
-    renderCouponLines = (order) => {
+    renderPriceAndCoupon = (order) => {
         if (order === null) return null;
         let coupon = order.coupon_lines[0];
         if (coupon === undefined) return null;
-        // let discount = Number(order.coupon_lines[0].discount).toLocaleString(
-        //     'vi-VN', {
-        //         style: 'currency', currency: 'VND', currencyDisplay: 'đ'
-        //     }
-        // );
         return (
             <Card>
                 <CardItem>
-                    <Body>
-                        <Text>Mã giảm giá: {coupon.code}</Text>
-                        <NumberFormat value={coupon.discount} displayType={'text'} thousandSeparator={true}
-                            renderText={
-                                value => <Text>Chiết khấu: {value} đ</Text>
-                            }
-                        />
-                    </Body>
+                    <View style={{ flex: 1 }}>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                            <Text>Mã giảm giá: </Text>
+                            <Text>{coupon.code}</Text>
+                        </View>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                            <Text>Giảm giá: </Text>
+                            <NumberFormat value={coupon.discount} displayType={'text'} thousandSeparator={true}
+                                renderText={
+                                    value => <Text>-{value} đ</Text>
+                                }
+                            />
+                        </View>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                            <Text>Tổng tạm tính: </Text>
+                            <NumberFormat value={(parseFloat(order.total) + parseFloat(order.discount_total))} displayType={'text'} thousandSeparator={true}
+                                renderText={
+                                    value => <Text>{value} đ</Text>
+                                }
+                            />
+                        </View>
+                    </View>
                 </CardItem>
             </Card>
         )
@@ -99,12 +98,19 @@ export default class OrderDetail extends Component {
     renderOptionalInfos = (order) => {
         return (
             <Card>
-                <CardItem>
-                    <Body>
-                        <Text>Phương thức thanh toán: {order.payment_method_title}</Text>
-                        <Text>Ghi chú: {order.customer_note}</Text>
-                    </Body>
+                <CardItem header>
+                    <View>
+                        <Text>Phương thức thanh toán</Text>
+                        <Text style={{ fontSize: 14, fontWeight: 'normal' }}>{order.payment_method_title}</Text>
+                    </View>
                 </CardItem>
+                {
+                    order.customer_note != '' ?
+                        <CardItem>
+                            <Text>Ghi chú: {order.customer_note}</Text>
+                        </CardItem>
+                    : null
+                }
             </Card>
         )
     }
@@ -116,7 +122,7 @@ export default class OrderDetail extends Component {
                 <Header>
                     <Left>
                         <TouchableOpacity onPress={() => this.props.navigation.goBack(null)}>
-                            <Ionicons name='ios-arrow-back' size={38} />
+                            <Ionicons name='ios-arrow-back' size={38} style={{ color: '#FFF' }} />
                         </TouchableOpacity>
                     </Left>
                     <Body>
@@ -126,9 +132,21 @@ export default class OrderDetail extends Component {
                 </Header>
                 <Content>
                     {this.renderOrderInfos(order)}
-                    {this.renderCouponLines(order)}
-                    {this.renderOrderDetailContent(order.line_items)}
                     {this.renderOptionalInfos(order)}
+                    {this.renderPriceAndCoupon(order)}
+                    <Card>
+                        <CardItem>
+                            <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
+                                <Text>Thành tiền: </Text>
+                                <NumberFormat value={order.total} displayType={'text'} thousandSeparator={true}
+                                    renderText={
+                                        value => <Text style={styles.priceTotal}>{value} đ</Text>
+                                    }
+                                />
+                            </View>
+                        </CardItem>
+                    </Card>
+                    {this.renderOrderDetailContent(order.line_items)}
                 </Content>
             </Container>
         )
@@ -151,10 +169,6 @@ const styles = StyleSheet.create({
         fontSize: 16
     },
     priceTotal: {
-        color: '#008000',
-        fontWeight: 'bold'
-    },
-    footerText: {
-        fontWeight: 'bold'
+        color: '#FD842B',
     },
 });
