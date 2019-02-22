@@ -103,7 +103,7 @@ var styles = StyleSheet.create({
     header_text: {
         fontWeight: 'bold',
         fontSize: 20,
-        color: "#FF8000"
+        color: "#F79620"
     },
     linking_text: {
         fontSize: 14,
