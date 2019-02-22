@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, ActivityIndicator, TouchableOpacity, Linking, Alert } from 'react-native';
+import { StyleSheet, View, ActivityIndicator, TouchableOpacity, TextInput, Linking } from 'react-native';
 import { connect } from 'react-redux';
-import { Container, Header, Body, Left, Content, Text, Button, Card, CardItem, Icon } from 'native-base';
-
+import { Container, Header, Content, Text, Card, CardItem } from 'native-base';
+import Ionicons from "react-native-vector-icons/Ionicons";
 import BannerSlider from './Banner';
 import { ProductList, ProductGrid } from '../components/product';
 import { getProducts, productsRefreshing } from '../redux/actions/homeAction';
@@ -106,6 +106,23 @@ class Home extends Component {
         );
     }
 
+    renderPopUpHotLine() {
+        return (
+            <View style={styles.buttonHotLine}>
+                <TouchableOpacity onPress={() => {
+                    Linking.canOpenURL('tel:19006037').then(supported => {
+                        if (!supported) {
+                            console.log("Thiết bị của bạn không hỗ trợ cuộc gọi!");
+                        } else {
+                            return Linking.openURL('tel:19006037');
+                        }
+                    }).catch(err => console.error('An error occurred', err));
+                }} >
+                    <Ionicons name='ios-call' size={50} style={{ color: '#F00' }} />
+                </TouchableOpacity>
+            </View>
+        );
+    }
 
     render() {
         if (this.props.isLoading) {
@@ -124,14 +141,29 @@ class Home extends Component {
         }
         return (
             <Container>
-                {/* <Header>
-                    <Body>
-                        <Text>Phần Mềm Vàng Store</Text>
-                    </Body>
-                </Header> */}
+                <Header>
+                    <View style={{ flex: 1, flexDirection: 'row' }}>
+                        <TouchableOpacity style={styles.icon}>
+                            <Ionicons name='ios-menu' size={38} style={{ color: '#FFF' }} />
+                        </TouchableOpacity>
+                        <View style={{ flex: 1, flexDirection: 'row' }}>
+                            <TextInput
+                                style={styles.textInput}
+                                multiline={false}
+                                maxLength={100}
+                                underlineColorAndroid='transparent'
+                                placeholder="Tìm kiếm sản phẩm"
+                                placeholderTextColor='#9A9A9A'
+                            />
+                            <TouchableOpacity style={styles.icon}>
+                                <Ionicons name='ios-search' size={35} style={{ color: '#FFF' }} />
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </Header>
                 <Content>
                     <BannerSlider />
-                    <Button full style={{ backgroundColor: "#3F51B5", marginTop: 5, marginBottom: 20 }}
+                    {/* <Button full style={{ backgroundColor: "#3F51B5", marginTop: 5, marginBottom: 20 }}
                         onPress={() => {
                             Linking.canOpenURL('tel:19006037').then(supported => {
                                 if (!supported) {
@@ -151,7 +183,7 @@ class Home extends Component {
                             }}>
                             HOTLINE: 1900 6037
                         </Text>
-                    </Button>
+                    </Button> */}
                     {this.renderFeatureProducts()}
                     <Card>
                         <CardItem style={{ backgroundColor: '#008000', justifyContent: 'center', alignItems: 'center' }}>
@@ -166,6 +198,7 @@ class Home extends Component {
                     </Card>
                     {this.renderProductList()}
                 </Content>
+                {this.renderPopUpHotLine()}
             </Container>
         );
     }
@@ -193,5 +226,34 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#FFF',
         marginTop: 20
+    },
+    icon: {
+        marginTop: 10,
+    },
+    buttonHotLine: {
+        position: 'absolute',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#B2B2B2',
+        borderRadius: 30,
+        borderWidth: 1,
+        borderColor: '#B2B2B2',
+        height: 60,
+        width: 60,
+        left: 10,
+        bottom: 10,
+    },
+    textInput: {
+        flex: 1,
+        borderRadius: 2,
+        borderWidth: 1,
+        borderColor: '#FFF',
+        backgroundColor: '#FFF',
+        textAlign: 'left',
+        paddingLeft: 10,
+        paddingTop: 10,
+        paddingRight: 10,
+        margin: 10,
+        color: '#000',
     },
 });

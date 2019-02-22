@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, ActivityIndicator, Alert, Picker, TouchableOpacity, FlatList, Image } from 'react-native';
+import { StyleSheet, View, ActivityIndicator,  Picker, TouchableOpacity, FlatList } from 'react-native';
 import { connect } from "react-redux";
-import { Container, Header, Left, Right, Body, Content, Text, Card, CardItem } from "native-base";
+import { Container, Header, Left, Right, Body, Content, Text, Title } from "native-base";
 import { fetchingOrders } from '../redux/actions/orderAction';
 import Ionicons from "react-native-vector-icons/Ionicons";
 import ListOrder from "../components/order/ListOrder";
@@ -43,7 +43,7 @@ class Orders extends Component {
                         </TouchableOpacity>
                     </Left>
                     <Body>
-                        <Text style={styles.body}>Đơn hàng của tôi</Text>
+                        <Title>Đơn hàng của tôi</Title>
                     </Body>
                     <Right />
                 </Header>
@@ -125,8 +125,4 @@ const styles = StyleSheet.create({
     findIDOrder: {
         flex: 1,
     },
-    body: {
-        color: '#FFF',
-        fontSize: 16
-    }
 });
