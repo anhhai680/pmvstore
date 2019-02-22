@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Image, FlatList, TouchableOpacity, ListView, Alert } from 'react-native';
+import { StyleSheet, View, Image, TouchableOpacity, ListView, Alert } from 'react-native';
 import { Container, Header, Content, Left, Right, Body, Card, CardItem, Text, Icon, Title, Footer, Button, List, ListItem } from 'native-base';
 import { connect } from 'react-redux';
 import NumberFormat from 'react-number-format';
@@ -138,7 +138,7 @@ class Cart extends Component {
                         </TouchableOpacity>
                     </Left>
                     <Body>
-                        <Text style={styles.headerText}>Giỏ hàng</Text>
+                        <Title>Giỏ hàng</Title>
                     </Body>
                     <Right />
                 </Header>
@@ -297,14 +297,8 @@ var styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
-    headerText: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        color: '#FFF',
-        fontSize: 16
-    },
     price: {
-        color: '#FD842B'
+        color: '#F79620'
     },
     productName: {
         flex: 1,
@@ -327,7 +321,7 @@ var styles = StyleSheet.create({
         paddingRight: 10
     },
     button: {
-        backgroundColor: '#3F51B5',
+        backgroundColor: '#F79620',
         borderTopLeftRadius: 50,
         borderBottomLeftRadius: 50
     },
@@ -341,7 +335,7 @@ var styles = StyleSheet.create({
         width: 35,
         height: 35,
         borderRadius: 20,
-        backgroundColor: '#FD842B',
+        backgroundColor: '#F79620',
         textAlign: 'center',
         fontSize: 17,
         alignItems: 'center',
@@ -360,8 +354,8 @@ var styles = StyleSheet.create({
         justifyContent: 'center',
         paddingTop: 6,
         borderWidth: 1,
-        borderColor: '#FD842B',
-        color: '#FD842B',
+        borderColor: '#F79620',
+        color: '#F79620',
     },
     view_line_box: {
         position: 'absolute',
@@ -370,7 +364,7 @@ var styles = StyleSheet.create({
     },
     line_box: {
         flex: 1,
-        backgroundColor: '#FD842B',
+        backgroundColor: '#F79620',
         height: 10,
         borderRadius: 30,
     },

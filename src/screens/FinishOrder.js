@@ -307,7 +307,7 @@ const styles = StyleSheet.create({
         width: 35,
         height: 35,
         borderRadius: 20,
-        backgroundColor: '#FD842B',
+        backgroundColor: '#F79620',
         textAlign: 'center',
         fontSize: 17,
         alignItems: 'center',
@@ -322,7 +322,7 @@ const styles = StyleSheet.create({
     },
     line_box: {
         flex: 1,
-        backgroundColor: '#FD842B',
+        backgroundColor: '#F79620',
         height: 10,
         borderRadius: 30,
     },
@@ -364,7 +364,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignSelf: 'center',
         justifyContent: 'center',
-        backgroundColor: '#3F51B5',
+        backgroundColor: '#F79620',
     },
     textButton: {
         color: '#FFF',

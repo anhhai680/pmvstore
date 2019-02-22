@@ -197,7 +197,7 @@ var styles = StyleSheet.create({
     },
     button: {
         height: 36,
-        backgroundColor: '#3F51B5',
+        backgroundColor: '#F79620',
         borderRadius: 8,
         marginBottom: 10,
         marginTop: 10,

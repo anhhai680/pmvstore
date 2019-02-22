@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
-import { View, ActivityIndicator, AsyncStorage, Alert } from "react-native";
+import { View, ActivityIndicator, AsyncStorage, Alert, StatusBar } from "react-native";
 import { Provider } from 'react-redux';
-import { Root } from 'native-base';
+import { Root, StyleProvider } from 'native-base';
+import getTheme from './native-base-theme/components';
+import platform from './native-base-theme/variables/platform';
+
 import firebase from 'react-native-firebase';
 import type { Notification, NotificationOpen } from 'react-native-firebase';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -167,9 +170,11 @@ export default class App extends Component {
       // <Provider store={ReduxConfig.store}>
       //   <PersistGate loading={<LoadingScreen />} persistor={ReduxConfig.persistor}>
       <Provider store={store}>
-          <Root>
+        <Root>
+          <StyleProvider style={getTheme(platform)}>
             <AppWithNavigationState />
-          </Root>
+          </StyleProvider>
+        </Root>
       </Provider>
       //   </PersistGate>
       // </Provider>

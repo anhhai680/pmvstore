@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, TouchableOpacity, Image, Alert, FlatList } from 'react-native';
-import { Body, Header, Right, Left, Footer, Text, Content, Card, CardItem } from "native-base";
+import { StyleSheet, View, TouchableOpacity, FlatList } from 'react-native';
+import { Footer, Text, Content, Card, CardItem } from "native-base";
 import NumberFormat from 'react-number-format';
 import dateformat from 'dateformat';
 import { Constants } from '../../common/Index';
@@ -19,15 +19,15 @@ export default class ListOrder extends Component {
             <Card>
                 <CardItem>
                     <View style={{ flex: 1, marginHorizontal: -10 }}>
-                        <TouchableOpacity onPress={() => this.onPressItem(item)}>
-                            <Header style={styles.header}>
-                                <Body>
+                        <TouchableOpacity style={styles.backgroundTouch} onPress={() => this.onPressItem(item)}>
+                            <View style={styles.view_headerTouch}>
+                                <View style={{ width: '75%' }} >
                                     <Text style={styles.headerText}>Đơn hàng: #{item.id}
                                         {/* {item.order_key.replace('wc_order_', '').toUpperCase()} */}
                                     </Text>
                                     <Text style={styles.datecreateText}>Ngày đặt: {dateformat(new Date(item.date_created), "longDate")}</Text>
-                                </Body>
-                                <Left>
+                                </View>
+                                <View style={{ width: '25%', alignSelf: 'center' }} >
                                     <Text style={styles.headerText}>{
                                         Object.keys(Constants.statusOrder).map(key => {
                                             if (key === item.status) {
@@ -35,8 +35,8 @@ export default class ListOrder extends Component {
                                             }
                                         })
                                     }</Text>
-                                </Left>
-                            </Header>
+                                </View>
+                            </View>
                         </TouchableOpacity>
                         <Content>
                             <FlatList
@@ -82,12 +82,18 @@ export default class ListOrder extends Component {
 
 
 const styles = StyleSheet.create({
-    header: {
-        backgroundColor: '#3F51B5',
+    backgroundTouch: {
+        backgroundColor: '#F79620',
     },
     headerText: {
         color: '#fff',
         fontWeight: 'bold'
+    },
+    view_headerTouch: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        margin: 10
     },
     datecreateText: {
         fontSize: 14,

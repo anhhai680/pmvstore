@@ -76,6 +76,6 @@ const styles = StyleSheet.create({
         resizeMode: 'contain'
     },
     priceproduct: {
-        color: '#FD842B'
+        color: '#F79620'
     },
 })

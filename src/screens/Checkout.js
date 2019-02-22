@@ -177,7 +177,7 @@ var styles = StyleSheet.create({
         width: 35,
         height: 35,
         borderRadius: 20,
-        backgroundColor: '#FD842B',
+        backgroundColor: '#F79620',
         textAlign: 'center',
         fontSize: 17,
         alignItems: 'center',
@@ -196,8 +196,8 @@ var styles = StyleSheet.create({
         justifyContent: 'center',
         paddingTop: 6,
         borderWidth: 1,
-        borderColor: '#FD842B',
-        color: '#FD842B',
+        borderColor: '#F79620',
+        color: '#F79620',
     },
     view_line_box: {
         position: 'absolute',
@@ -206,7 +206,7 @@ var styles = StyleSheet.create({
     },
     line_box: {
         flex: 1,
-        backgroundColor: '#FD842B',
+        backgroundColor: '#F79620',
         height: 10,
         borderRadius: 30,
     },

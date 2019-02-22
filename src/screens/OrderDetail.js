@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, TouchableOpacity, FlatList, Image } from 'react-native';
-import { Container, Header, Left, Right, Body, Content, Text, Card, CardItem } from "native-base";
+import { View, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
+import { Container, Header, Left, Right, Body, Content, Text, Card, CardItem, Title } from "native-base";
 import NumberFormat from 'react-number-format';
 import dateformat from 'dateformat';
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -109,7 +109,7 @@ export default class OrderDetail extends Component {
                         <CardItem>
                             <Text>Ghi chú: {order.customer_note}</Text>
                         </CardItem>
-                    : null
+                        : null
                 }
             </Card>
         )
@@ -126,7 +126,7 @@ export default class OrderDetail extends Component {
                         </TouchableOpacity>
                     </Left>
                     <Body>
-                        <Text style={styles.body}>Chi tiết đơn hàng</Text>
+                        <Title>Chi tiết đơn hàng</Title>
                     </Body>
                     <Right />
                 </Header>
@@ -163,10 +163,6 @@ const styles = StyleSheet.create({
         fontSize: 11,
         fontWeight: 'normal',
         fontStyle: 'italic'
-    },
-    body: {
-        color: '#FFF',
-        fontSize: 16
     },
     priceTotal: {
         color: '#FD842B',

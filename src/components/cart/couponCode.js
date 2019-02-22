@@ -87,7 +87,7 @@ export default class couponCode extends Component {
                     </View>
                     <Text style={{ fontSize: 9, fontStyle: 'italic' }}>
                         Hãy áp dụng 
-                        <Text style={{ fontSize: 10, fontWeight: '900', color: '#FD842B' }}> mã giảm giá </Text>
+                        <Text style={{ fontSize: 10, fontWeight: '900', color: '#F79620' }}> mã giảm giá </Text>
                         để được nhận ưu đãi.
                     </Text>
                 </View>
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     buttonApply: {
-        backgroundColor: '#FD842B',
+        backgroundColor: '#F79620',
         borderRadius: 5,
         width: 100,
         height: 30,
@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
         marginLeft: 5
     },
     buttonCancel: {
-        backgroundColor: '#FD842B',
+        backgroundColor: '#F79620',
         borderRadius: 5,
         width: 50,
         height: 30,
