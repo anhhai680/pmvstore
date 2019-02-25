@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, ActivityIndicator, TouchableOpacity, TextInput, Linking } from 'react-native';
+import { StyleSheet, View, ActivityIndicator, TouchableOpacity, TextInput, Linking, Animated, Easing } from 'react-native';
 import { connect } from 'react-redux';
 import { Container, Header, Content, Text, Card, CardItem } from 'native-base';
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -7,7 +7,6 @@ import BannerSlider from './Banner';
 import { ProductList, ProductGrid } from '../components/product';
 import { getProducts, productsRefreshing } from '../redux/actions/homeAction';
 import { fetchingCartItem } from '../redux/actions/cartAction';
-
 
 class Home extends Component {
 
@@ -17,6 +16,7 @@ class Home extends Component {
         this.renderProductList = this.renderProductList.bind(this);
         this.getAllProducts = this.getAllProducts.bind(this);
         this.renderBestSellProducts = this.renderBestSellProducts.bind(this);
+        this.PopUpHandler = new Animated.Value(0);
     }
 
     componentWillMount() {
@@ -28,6 +28,19 @@ class Home extends Component {
         this.renderProductList();
         this.renderBestSellProducts();
         this.getCartItems();
+        this.StartPopUpHandlerFunction();
+    }
+
+    StartPopUpHandlerFunction() {
+        this.PopUpHandler.setValue(0.3)
+
+        Animated.spring(
+            this.PopUpHandler,
+            {
+                toValue: 1,
+                friction: 1
+            }
+        ).start(() => this.StartPopUpHandlerFunction())
     }
 
     getCartItems = async () => {
@@ -109,17 +122,48 @@ class Home extends Component {
     renderPopUpHotLine() {
         return (
             <View style={styles.buttonHotLine}>
-                <TouchableOpacity onPress={() => {
-                    Linking.canOpenURL('tel:19006037').then(supported => {
-                        if (!supported) {
-                            console.log("Thiết bị của bạn không hỗ trợ cuộc gọi!");
-                        } else {
-                            return Linking.openURL('tel:19006037');
-                        }
-                    }).catch(err => console.error('An error occurred', err));
-                }} >
-                    <Ionicons name='ios-call' size={50} style={{ color: '#F00' }} />
+                <Animated.View
+                    style={{
+                        transform: [{
+                            scale: this.PopUpHandler
+                        }]
+                    }}>
+                    {this.props.children}
+                    <TouchableOpacity onPress={() => {
+                        Linking.canOpenURL('tel:19006037').then(supported => {
+                            if (!supported) {
+                                console.log("Thiết bị của bạn không hỗ trợ cuộc gọi!");
+                            } else {
+                                return Linking.openURL('tel:19006037');
+                            }
+                        }).catch(err => console.error('An error occurred', err));
+                    }} >
+                        <Ionicons name='ios-call' size={50} style={{ color: '#FFF' }} />
+                    </TouchableOpacity>
+                </Animated.View>
+            </View>
+        );
+    }
+
+    renderHeaderMenu() {
+        return (
+            <View style={{ flex: 1, flexDirection: 'row' }}>
+                <TouchableOpacity style={styles.icon}>
+                    <Ionicons name='ios-menu' size={38} style={{ color: '#FFF' }} />
                 </TouchableOpacity>
+                <View style={{ flex: 1, flexDirection: 'row' }}>
+                    <TextInput
+                        style={styles.textInput}
+                        multiline={false}
+                        maxLength={100}
+                        underlineColorAndroid='transparent'
+                        placeholder="Tìm kiếm sản phẩm"
+                        placeholderTextColor='#9A9A9A'
+                    />
+                    <TouchableOpacity style={styles.icon}>
+                        <Ionicons name='ios-search' size={35} style={{ color: '#FFF' }} />
+                    </TouchableOpacity>
+                </View>
             </View>
         );
     }
@@ -142,24 +186,7 @@ class Home extends Component {
         return (
             <Container>
                 <Header>
-                    <View style={{ flex: 1, flexDirection: 'row' }}>
-                        <TouchableOpacity style={styles.icon}>
-                            <Ionicons name='ios-menu' size={38} style={{ color: '#FFF' }} />
-                        </TouchableOpacity>
-                        <View style={{ flex: 1, flexDirection: 'row' }}>
-                            <TextInput
-                                style={styles.textInput}
-                                multiline={false}
-                                maxLength={100}
-                                underlineColorAndroid='transparent'
-                                placeholder="Tìm kiếm sản phẩm"
-                                placeholderTextColor='#9A9A9A'
-                            />
-                            <TouchableOpacity style={styles.icon}>
-                                <Ionicons name='ios-search' size={35} style={{ color: '#FFF' }} />
-                            </TouchableOpacity>
-                        </View>
-                    </View>
+                    {this.renderHeaderMenu()}
                 </Header>
                 <Content>
                     <BannerSlider />
@@ -234,10 +261,10 @@ const styles = StyleSheet.create({
         position: 'absolute',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#B2B2B2',
+        backgroundColor: '#F79620',
         borderRadius: 30,
         borderWidth: 1,
-        borderColor: '#B2B2B2',
+        borderColor: '#F79620',
         height: 60,
         width: 60,
         left: 10,

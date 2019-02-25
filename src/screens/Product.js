@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Image, TouchableOpacity, ActivityIndicator, Dimensions, Modal, BackHandler, KeyboardAvoidingView, Alert } from 'react-native';
+import { StyleSheet, View, Image, TouchableOpacity, ActivityIndicator, Modal, Alert } from 'react-native';
 import { connect } from 'react-redux';
-import { Container, Header, Body, Content, Left, Right, Text, Button, Card, CardItem, Tabs, Tab, TabHeading } from 'native-base';
+import { Container, Body, Content, Text, Card, CardItem, Tabs, Tab, TabHeading } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { NavigationActions } from 'react-navigation'
-
-import { WooAPI } from '../services/WooAPI';
+import Ionicons from "react-native-vector-icons/Ionicons";
 import * as productCom from '../components/product/';
 import * as cart from '../components/cart';
 import { ProductGrid } from '../components/product';
@@ -21,7 +19,14 @@ class Product extends Component {
         return {
             headerRight: (
                 <productCom.HeaderRightButtons data={product} />
-            )
+            ),
+            // headerLeft: (
+            //     <View style={{ flex: 1, flexDirection: 'row', marginLeft: 15 }}>
+            //         <TouchableOpacity onPress={() => navigation.goBack(null)}>
+            //             <Ionicons name='ios-arrow-back' size={38} style={{ color: '#808080' }} />
+            //         </TouchableOpacity>
+            //     </View>
+            // )
         }
     }
 
