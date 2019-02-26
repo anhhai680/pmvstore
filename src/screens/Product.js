@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Image, TouchableOpacity, ActivityIndicator, Modal, Alert } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, ActivityIndicator, Modal, Alert } from 'react-native';
 import { connect } from 'react-redux';
-import { Container, Body, Content, Text, Card, CardItem, Tabs, Tab, TabHeading } from 'native-base';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import Ionicons from "react-native-vector-icons/Ionicons";
+import { Container, Body, Content, Text, Card, CardItem } from 'native-base';
 import * as productCom from '../components/product/';
 import * as cart from '../components/cart';
 import { ProductGrid } from '../components/product';
+import Ionicons from "react-native-vector-icons/Ionicons";
 
 import { addCartItem } from '../redux/actions/cartAction';
 import { getProductAttributeTerms, getProductVariations } from '../redux/actions/productAction';
@@ -348,7 +347,7 @@ class Product extends Component {
             );
         }
         return (
-            <Container style={styles.container} >
+            <Container>
                 <Content style={{ marginBottom: 50 }}>
                     <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                         <Modal
@@ -387,14 +386,38 @@ class Product extends Component {
                             </Body>
                         </CardItem>
                     </Card>
-                    <Tabs>
+                    <Card>
+                        <CardItem header>
+                            <Text>Quyền lợi khách hàng</Text>
+                        </CardItem>
+                        <CardItem>
+                            <Body>
+                                <View style={styles.view_content}>
+                                    <Ionicons name='ios-checkmark-circle' size={30} color='#00D700'
+                                        style={styles.marginRightIcons}></Ionicons>
+                                    <Text>ABC 1</Text>
+                                </View>
+                                <View style={styles.view_content}>
+                                    <Ionicons name='ios-checkmark-circle' size={30} color='#00D700'
+                                        style={styles.marginRightIcons}></Ionicons>
+                                    <Text>ABC 2</Text>
+                                </View>
+                            </Body>
+                        </CardItem>
+                    </Card>
+                    <productCom.ProductContent content={this.state.product.description} />
+                    {
+                        this.state.attributes == '' ? null :
+                            <productCom.ProductAttributes attributes={this.state.attributes} />
+                    }
+                    {/* <Tabs>
                         <Tab heading={<TabHeading><Icon name="info-circle" size={20} /><Text>Thông tin sản phẩm</Text></TabHeading>}>
                             <productCom.ProductContent content={this.state.product.description} />
                         </Tab>
                         <Tab heading="Đặc tính">
                             <productCom.ProductAttributes attributes={this.state.attributes} />
                         </Tab>
-                    </Tabs>
+                    </Tabs> */}
                     {this.renderRelatedProducts()}
                 </Content>
                 <cart.addCart product={this.state.product} addProductToCartItem={this.addProductToCartItem} />
@@ -437,4 +460,12 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: '#FF8000',
     },
+    view_content: {
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    marginRightIcons: {
+        marginRight: 10
+    }
 });

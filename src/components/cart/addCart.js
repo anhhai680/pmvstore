@@ -19,6 +19,7 @@ export default class addCart extends Component {
 
 const styles = StyleSheet.create({
     viewTouch: {
+        bottom: 0,
         flexDirection: 'row',
         alignItems: 'center',
         borderColor: '#015205',
@@ -31,7 +32,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#018206',
         justifyContent: 'center',
         alignItems: 'center',
-        bottom: 0,
         shadowColor: "#000000",
         shadowOpacity: 0.8,
         shadowRadius: 1,

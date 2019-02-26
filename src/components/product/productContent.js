@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
-import { Dimensions, Image, View } from 'react-native';
-import { Body, Card, CardItem } from 'native-base';
+import { StyleSheet, Dimensions, Image, View, TouchableOpacity } from 'react-native';
+import { Body, Card, CardItem, Text } from 'native-base';
 import HTML from 'react-native-render-html';
 
 export default class ProductContent extends PureComponent {
@@ -9,8 +9,11 @@ export default class ProductContent extends PureComponent {
         super(props);
         this.state = {
             _widthScreen: Dimensions.get('screen').width,
-            _scaleScreen: Dimensions.get('screen').scale
+            _scaleScreen: Dimensions.get('screen').scale,
+            heightContent: 250,
+            visibleButton: true,
         };
+        this.changeHeightContent = this.changeHeightContent.bind(this);
     }
 
     componentDidMount() {
@@ -27,9 +30,19 @@ export default class ProductContent extends PureComponent {
         })
     }
 
+    changeHeightContent = () => {
+        this.setState({
+            visibleButton: false,
+            heightContent: null
+        });
+    }
+
     render() {
         return (
-            <Card>
+            <Card style={{ height: this.state.heightContent }}>
+                <CardItem header>
+                    <Text>Thông tin chi tiết</Text>
+                </CardItem>
                 <CardItem>
                     <Body>
                         <HTML html={this.props.content}
@@ -51,10 +64,39 @@ export default class ProductContent extends PureComponent {
                         />
                     </Body>
                 </CardItem>
+                {
+                    this.state.visibleButton ?
+                        <CardItem style={styles.cardItemView}>
+                            <TouchableOpacity style={styles.touchView}
+                                onPress={() => this.changeHeightContent()}>
+                                <Text style={styles.textColor}>Xem thêm</Text>
+                            </TouchableOpacity>
+                        </CardItem>
+                        : null
+                }
             </Card>
         );
     }
 }
+
+const styles = StyleSheet.create({
+    cardItemView: {
+        flex: 1,
+        justifyContent: 'center',
+        position: 'absolute',
+        bottom: 0,
+        backgroundColor: '#FFF',
+        opacity: 0.75,
+    },
+    touchView: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    textColor: {
+        color: '#158FEA'
+    },
+});
 
 export const tagsStyles = {
     a: {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { View, Text, FlatList, Platform } from 'react-native';
-import { Card, CardItem } from 'native-base';
+import { View, FlatList, Platform } from 'react-native';
+import { Card, CardItem, Text } from 'native-base';
 
 
 export default class productAttributes extends Component {
@@ -11,6 +11,9 @@ export default class productAttributes extends Component {
     render() {
         return (
             <Card>
+                <CardItem header>
+                    <Text>Đặc tính</Text>
+                </CardItem>
                 <CardItem>
                     <FlatList
                         data={this.props.attributes}
@@ -18,7 +21,7 @@ export default class productAttributes extends Component {
                         renderItem={({ item, index }) =>
                             <View key={index} style={{ flex: 1, marginBottom: 5 }}>
                                 <Text style={{ fontWeight: 'bold', textAlign: 'left', paddingRight: 5 }}>{item.name}</Text>
-                                <View style={{ paddingTop:5 }}>
+                                <View style={{ paddingTop: 5 }}>
                                     <Text style={{ textAlign: 'left', flexWrap: 'wrap' }}>{item.options}</Text>
                                 </View>
                             </View>
