@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, ActivityIndicator, TouchableOpacity, TextInput, Linking, Animated, Easing } from 'react-native';
+import { StyleSheet, View, ActivityIndicator, TouchableOpacity, Linking, Animated } from 'react-native';
 import { connect } from 'react-redux';
 import { Container, Header, Content, Text, Card, CardItem } from 'native-base';
 import Ionicons from "react-native-vector-icons/Ionicons";
 import BannerSlider from './Banner';
-import { ProductList, ProductGrid } from '../components/product';
+import { ProductList, ProductGrid, FindProductButton } from '../components/product';
 import { getProducts, productsRefreshing } from '../redux/actions/homeAction';
 import { fetchingCartItem } from '../redux/actions/cartAction';
 
@@ -148,22 +148,10 @@ class Home extends Component {
     renderHeaderMenu() {
         return (
             <View style={{ flex: 1, flexDirection: 'row' }}>
-                <TouchableOpacity style={styles.icon}>
+                <TouchableOpacity style={styles.iconMenu}>
                     <Ionicons name='ios-menu' size={38} style={{ color: '#FFF' }} />
                 </TouchableOpacity>
-                <View style={{ flex: 1, flexDirection: 'row' }}>
-                    <TextInput
-                        style={styles.textInput}
-                        multiline={false}
-                        maxLength={100}
-                        underlineColorAndroid='transparent'
-                        placeholder="Tìm kiếm sản phẩm"
-                        placeholderTextColor='#9A9A9A'
-                    />
-                    <TouchableOpacity style={styles.icon}>
-                        <Ionicons name='ios-search' size={35} style={{ color: '#FFF' }} />
-                    </TouchableOpacity>
-                </View>
+                <FindProductButton navigation={this.props.navigation} />
             </View>
         );
     }
@@ -190,27 +178,6 @@ class Home extends Component {
                 </Header>
                 <Content>
                     <BannerSlider />
-                    {/* <Button full style={{ backgroundColor: "#3F51B5", marginTop: 5, marginBottom: 20 }}
-                        onPress={() => {
-                            Linking.canOpenURL('tel:19006037').then(supported => {
-                                if (!supported) {
-                                    Alert.alert('Thiết bị của bạn không hỗ trợ cuộc gọi!');
-                                } else {
-                                    return Linking.openURL('tel:19006037');
-                                }
-                            }).catch(error => console.log(error));
-                        }} >
-                        <Icon name="ios-call-outline" style={{ fontSize: 36, fontWeight: 'bold' }} />
-                        <Text
-                            style={{
-                                fontWeight: "bold",
-                                fontSize: 16,
-                                textAlign: 'left',
-                                marginLeft: -20
-                            }}>
-                            HOTLINE: 1900 6037
-                        </Text>
-                    </Button> */}
                     {this.renderFeatureProducts()}
                     <Card>
                         <CardItem style={{ backgroundColor: '#008000', justifyContent: 'center', alignItems: 'center' }}>
@@ -254,8 +221,14 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFF',
         marginTop: 20
     },
-    icon: {
+    iconMenu: {
         marginTop: 10,
+    },
+    iconSearch: {
+        position: 'absolute',
+        marginRight: 15,
+        right: 0,
+        marginTop: 10
     },
     buttonHotLine: {
         position: 'absolute',
@@ -279,8 +252,8 @@ const styles = StyleSheet.create({
         textAlign: 'left',
         paddingLeft: 10,
         paddingTop: 10,
-        paddingRight: 10,
+        paddingRight: 40,
         margin: 10,
-        color: '#000',
+        color: '#9A9A9A',
     },
 });
