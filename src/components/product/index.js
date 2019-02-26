@@ -43,6 +43,9 @@ export const CartButton = _cartButton;
 import _HeaderRightButtons from './HeaderRightButtons';
 export const HeaderRightButtons = _HeaderRightButtons;
 
+import _FindProductButton from './FindProductButton';
+export const FindProductButton = _FindProductButton;
+
 import _ProductGrid from './productGrid';
 export const ProductGrid = _ProductGrid;
 

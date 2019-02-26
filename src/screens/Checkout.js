@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { StyleSheet, View, Modal, TouchableOpacity, ActivityIndicator, KeyboardAvoidingView, Alert } from "react-native";
-import { Container, Header, Left, Right, Content, Body, Text } from 'native-base';
-import Icon from "react-native-vector-icons/FontAwesome";
+import { Container, Header, Left, Right, Content, Body, Text, Title } from 'native-base';
 import { connect } from 'react-redux';
+import Ionicons from "react-native-vector-icons/Ionicons";
 
 import BillingCity from "../components/checkout/billing_city";
 
@@ -80,11 +80,11 @@ class Checkout extends Component {
                 <Header>
                     <Left>
                         <TouchableOpacity onPress={() => this.props.navigation.goBack()}>
-                            <Icon name="arrow-left" size={20} style={{ color: '#FFF' }} />
+                            <Ionicons name="ios-arrow-back" size={38} style={{ color: '#FFF' }} />
                         </TouchableOpacity>
                     </Left>
                     <Body>
-                        <Text style={styles.headerText}>Thanh toán</Text>
+                        <Title>Thanh toán</Title>
                     </Body>
                     <Right />
                 </Header>
@@ -161,17 +161,6 @@ var styles = StyleSheet.create({
         marginTop: 5,
         padding: 20,
         backgroundColor: '#ffffff',
-    },
-    headerText: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        color: '#fff',
-        fontSize: 16
-    },
-    title: {
-        fontSize: 30,
-        alignSelf: 'center',
-        marginBottom: 30
     },
     tabactived: {
         width: 35,

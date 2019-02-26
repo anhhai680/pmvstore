@@ -263,7 +263,7 @@ class FinishOrder extends Component {
                     </Card>
                     {this.renderProducts(order.line_items)}
                 </Content>
-                <Footer style={{ backgroundColor: '#3F51B5' }}>
+                <Footer style={{ backgroundColor: '#F79620' }}>
                     <TouchableOpacity onPress={() => this.onSuccessPayment()} style={styles.button}>
                         <Text style={styles.textButton}>Quay về màn hình chính</Text>
                     </TouchableOpacity>

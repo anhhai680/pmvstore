@@ -15,21 +15,18 @@ export const OrderStack = StackNavigator(
         Cart: {
             screen: Cart,
             navigationOptions: {
-                header: null,
                 //tabBarVisible: false
             }
         },
         Checkout: {
             screen: Checkout,
             navigationOptions: {
-                header: null,
                 tabBarVisible: false
             }
         },
         FinishOrder: {
             screen: FinishOrder,
             navigationOptions: {
-                header: null,
                 tabBarVisible: false
             }
         }
@@ -162,6 +159,7 @@ export const AppNavigator = StackNavigator(
         Order: {
             screen: OrderStack,
             navigationOptions: {
+                header: null,
                 tabBarVisible: false
             }
         },
