@@ -12,18 +12,8 @@ export default class badgeOrderProcess extends Component {
                     </View>
                     <View style={styles.view_tab}>
                         <Text style={styles.tabactived}>1</Text>
-                        {
-                            activedStep >= 2 ?
-                                <Text style={styles.tabactived}>2</Text>
-                                :
-                                <Text style={styles.tabinactived}>2</Text>
-                        }
-                        {
-                            activedStep === 3 ?
-                                <Text style={styles.tabactived}>3</Text>
-                                :
-                                <Text style={styles.tabinactived}>3</Text>
-                        }
+                        <Text style={activedStep >= 2 ? styles.tabactived : styles.tabinactived}>2</Text>
+                        <Text style={activedStep === 3 ? styles.tabactived : styles.tabinactived}>3</Text>
                     </View>
                 </View>
                 <View style={styles.view_text}>
@@ -36,7 +26,7 @@ export default class badgeOrderProcess extends Component {
     }
 }
 
-var styles = StyleSheet.create({
+const styles = StyleSheet.create({
     tabactived: {
         width: 35,
         height: 35,

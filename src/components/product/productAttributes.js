@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, FlatList, Platform } from 'react-native';
+import { View, FlatList, StyleSheet } from 'react-native';
 import { Card, CardItem, Text } from 'native-base';
 
 
@@ -19,8 +19,8 @@ export default class productAttributes extends Component {
                         data={this.props.attributes}
                         keyExtractor={(item, index) => item.id}
                         renderItem={({ item, index }) =>
-                            <View key={index} style={{ flex: 1, marginBottom: 5 }}>
-                                <Text style={{ fontWeight: 'bold', textAlign: 'left', paddingRight: 5 }}>{item.name}</Text>
+                            <View key={index} style={index % 2 === 0 ? styles.view_even : styles.view_odd}>
+                                <Text style={styles.headerText}>{item.name}</Text>
                                 <View style={{ paddingTop: 5 }}>
                                     <Text style={{ textAlign: 'left', flexWrap: 'wrap' }}>{item.options}</Text>
                                 </View>
@@ -31,3 +31,22 @@ export default class productAttributes extends Component {
         );
     }
 }
+
+const styles = StyleSheet.create({
+    view_even: {
+        flex: 1,
+        paddingBottom: 5,
+        paddingLeft: 5,
+        backgroundColor: '#DDDDDD',
+    },
+    view_odd: {
+        flex: 1,
+        paddingBottom: 5,
+        paddingLeft: 5,
+    },
+    headerText: {
+        fontWeight: 'bold',
+        textAlign: 'left',
+        paddingRight: 5
+    }
+});
