@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { BackHandler, Alert } from "react-native";
+import { BackHandler, Alert, ToastAndroid } from "react-native";
 import PropTypes from "prop-types";
 import { StackNavigator, TabNavigator, TabBarBottom, addNavigationHelpers, NavigationActions } from 'react-navigation';
 import { connect } from "react-redux";
@@ -174,6 +174,10 @@ export const AppNavigator = StackNavigator(
 
 
 class AppWithNavigationState extends Component {
+    constructor(props) {
+        super(props);
+        this.countBack = 0;
+    }
 
     static propTypes = {
         dispatch: PropTypes.func.isRequired,
@@ -193,18 +197,26 @@ class AppWithNavigationState extends Component {
         if (nav.routes.length === 1
             && (nav.routes[0].routes[0].index === 0
                 && nav.routes[0].routeName === 'Home')) {
-            Alert.alert(
-                'Thoát ứng dụng',
-                'Bạn có thực sự muốn thoát ?',
-                [
-                    { text: 'ĐỒNG Ý', onPress: () => BackHandler.exitApp() },
-                    { text: 'HUỶ', style: 'cancel' }
-                ], {
-                    cancelable: false
-                }
-            )
+            if (this.countBack < 1) {
+                ToastAndroid.show('Nhấn lần nữa để thoát!', ToastAndroid.SHORT);
+                this.countBack += 1;
+            } else {
+                BackHandler.exitApp();
+            }
+            // Alert.alert(
+            //     'Thoát ứng dụng',
+            //     'Bạn có thực sự muốn thoát ?',
+            //     [
+            //         { text: 'HUỶ', style: 'cancel' },
+            //         { text: 'ĐỒNG Ý', onPress: () => BackHandler.exitApp() },
+            //     ], {
+            //         cancelable: false
+            //     }
+            // )
+        } else {
+            dispatch({ type: 'Navigation/BACK' });
+            this.countBack = 0;
         }
-        dispatch({ type: 'Navigation/BACK' });
         return true;
     }
 
