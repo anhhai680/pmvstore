@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 import BillingCity from "../components/checkout/billing_city";
-
+import BadgeOrderProcess from "../components/badgeOrderProcess";
 import { createNewOrder } from "../redux/actions/orderAction";
 import { emptyCartItem } from '../redux/actions/cartAction';
 import { loadCities, saveCustomerInfo, loadCustomerInfo } from '../redux/actions/checkoutAction';
@@ -104,23 +104,7 @@ class Checkout extends Component {
                         </Modal>
                     </View>
                     <KeyboardAvoidingView behavior='padding' keyboardVerticalOffset={80}>
-                        <View style={styles.backgroundStepOrder}>
-                            <View style={styles.rounded_box}>
-                                <View style={styles.view_line_box}>
-                                    <View style={styles.line_box} />
-                                </View>
-                                <View style={styles.view_tab}>
-                                    <Text style={styles.tabactived}>1</Text>
-                                    <Text style={styles.tabactived}>2</Text>
-                                    <Text style={styles.tabinactived}>3</Text>
-                                </View>
-                            </View>
-                            <View style={styles.view_text}>
-                                <Text style={styles.textLeft}>Giỏ hàng</Text>
-                                <Text style={styles.textCenter}>Thanh toán</Text>
-                                <Text style={styles.textRight}>Hoàn tất</Text>
-                            </View>
-                        </View>
+                        <BadgeOrderProcess activedStep={2} />
                         <View style={styles.container}>
                             <BillingCity cityList={this.props.arrCities} cusInfo={this.props.customerInfo} completedOrder={this.completedOrder} />
                         </View>
@@ -162,72 +146,4 @@ var styles = StyleSheet.create({
         padding: 20,
         backgroundColor: '#ffffff',
     },
-    tabactived: {
-        width: 35,
-        height: 35,
-        borderRadius: 20,
-        backgroundColor: '#F79620',
-        textAlign: 'center',
-        fontSize: 17,
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingTop: 6,
-        color: '#FFF',
-    },
-    tabinactived: {
-        width: 35,
-        height: 35,
-        borderRadius: 20,
-        backgroundColor: '#FFF',
-        textAlign: 'center',
-        fontSize: 17,
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingTop: 6,
-        borderWidth: 1,
-        borderColor: '#F79620',
-        color: '#F79620',
-    },
-    view_line_box: {
-        position: 'absolute',
-        flexDirection: 'row',
-        justifyContent: 'center',
-    },
-    line_box: {
-        flex: 1,
-        backgroundColor: '#F79620',
-        height: 10,
-        borderRadius: 30,
-    },
-    view_tab: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-    },
-    rounded_box: {
-        justifyContent: 'center',
-        marginTop: 10,
-        marginLeft: 30,
-        marginRight: 30,
-    },
-    view_text: {
-        justifyContent: 'space-between',
-        marginLeft: 30,
-        marginRight: 30,
-        marginBottom: 10,
-        flexDirection: 'row',
-    },
-    textCenter: {
-        fontSize: 15,
-    },
-    textLeft: {
-        fontSize: 15,
-        marginLeft: -10,
-    },
-    textRight: {
-        fontSize: 15,
-        marginRight: -10,
-    },
-    backgroundStepOrder: {
-        backgroundColor: '#FBFBFB',
-    }
 });
