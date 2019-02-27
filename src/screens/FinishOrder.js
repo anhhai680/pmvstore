@@ -3,6 +3,7 @@ import { StyleSheet, View, FlatList, BackHandler, Platform, TouchableOpacity, Al
 import { Container, Header, Body, Content, Text, Card, CardItem, Footer } from "native-base";
 import { connect } from 'react-redux';
 import Icon from "react-native-vector-icons/FontAwesome";
+import BadgeOrderProcess from "../components/badgeOrderProcess";
 import NumberFormat from 'react-number-format';
 import { Constants } from '../common/Index';
 import ColorView from '../components/ColorView';
@@ -200,7 +201,7 @@ class FinishOrder extends Component {
                         <CardItem>
                             <Text>Ghi chú: {order.customer_note}</Text>
                         </CardItem>
-                    : null
+                        : null
                 }
             </Card>
         )
@@ -229,23 +230,7 @@ class FinishOrder extends Component {
                     </Body>
                 </Header>
                 <Content>
-                    <View style={styles.backgroundStepOrder}>
-                        <View style={styles.rounded_box}>
-                            <View style={styles.view_line_box}>
-                                <View style={styles.line_box} />
-                            </View>
-                            <View style={styles.view_tab}>
-                                <Text style={styles.tabactived}>1</Text>
-                                <Text style={styles.tabactived}>2</Text>
-                                <Text style={styles.tabactived}>3</Text>
-                            </View>
-                        </View>
-                        <View style={styles.view_text}>
-                            <Text style={styles.textLeft}>Giỏ hàng</Text>
-                            <Text style={styles.textCenter}>Thanh toán</Text>
-                            <Text style={styles.textRight}>Hoàn tất</Text>
-                        </View>
-                    </View>
+                    <BadgeOrderProcess activedStep={3} />
                     {this.renderOrderInfos(order)}
                     {this.renderOptionalInfos(order)}
                     {this.renderPriceAndCoupon(order)}
@@ -302,60 +287,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         color: '#FFF',
         fontSize: 16
-    },
-    tabactived: {
-        width: 35,
-        height: 35,
-        borderRadius: 20,
-        backgroundColor: '#F79620',
-        textAlign: 'center',
-        fontSize: 17,
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingTop: 6,
-        color: '#FFF',
-    },
-    view_line_box: {
-        position: 'absolute',
-        flexDirection: 'row',
-        justifyContent: 'center',
-    },
-    line_box: {
-        flex: 1,
-        backgroundColor: '#F79620',
-        height: 10,
-        borderRadius: 30,
-    },
-    view_tab: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-    },
-    rounded_box: {
-        justifyContent: 'center',
-        marginTop: 10,
-        marginLeft: 30,
-        marginRight: 30,
-    },
-    view_text: {
-        justifyContent: 'space-between',
-        marginLeft: 30,
-        marginRight: 30,
-        marginBottom: 10,
-        flexDirection: 'row',
-    },
-    textCenter: {
-        fontSize: 15,
-    },
-    textLeft: {
-        fontSize: 15,
-        marginLeft: -10,
-    },
-    textRight: {
-        fontSize: 15,
-        marginRight: -10,
-    },
-    backgroundStepOrder: {
-        backgroundColor: '#FBFBFB',
     },
     priceTotal: {
         color: '#FD842B',
