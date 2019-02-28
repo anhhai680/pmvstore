@@ -13,6 +13,9 @@ export const Menu = _Menu;
 import _Product from './Product';
 export const Product = _Product;
 
+import _SearchProduct from './SearchProduct';
+export const SearchProduct = _SearchProduct;
+
 import _List from './List';
 export const List = _List;
 

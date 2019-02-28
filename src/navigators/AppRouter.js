@@ -1,11 +1,11 @@
 import React, { Component } from "react";
-import { BackHandler, Alert, ToastAndroid } from "react-native";
+import { BackHandler, ToastAndroid } from "react-native";
 import PropTypes from "prop-types";
-import { StackNavigator, TabNavigator, TabBarBottom, addNavigationHelpers, NavigationActions } from 'react-navigation';
+import { StackNavigator, TabNavigator, TabBarBottom, addNavigationHelpers } from 'react-navigation';
 import { connect } from "react-redux";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import { Home, About, Cart, Checkout, FinishOrder, Product, List, Notifications, Orders, OrderDetail } from "../screens";
+import { Home, About, Cart, Checkout, FinishOrder, Product, List, Notifications, Orders, OrderDetail, SearchProduct } from "../screens";
 import { addListener } from "../redux/ReduxNavigation";
 import IconBadge from "../components/IconBadge";
 
@@ -163,6 +163,13 @@ export const AppNavigator = StackNavigator(
                 tabBarVisible: false
             }
         },
+        SearchProduct: {
+            screen: SearchProduct,
+            navigationOptions: {
+                header: null,
+                tabBarVisible: false
+            }
+        },
         List: { screen: List },
         About: { screen: About }
     },
@@ -176,7 +183,9 @@ export const AppNavigator = StackNavigator(
 class AppWithNavigationState extends Component {
     constructor(props) {
         super(props);
-        this.countBack = 0;
+        this.state = {
+            countBack: 0,
+        }
     }
 
     static propTypes = {
@@ -197,9 +206,11 @@ class AppWithNavigationState extends Component {
         if (nav.routes.length === 1
             && (nav.routes[0].routes[0].index === 0
                 && nav.routes[0].routeName === 'Home')) {
-            if (this.countBack < 1) {
+            if (this.state.countBack < 1) {
                 ToastAndroid.show('Nhấn lần nữa để thoát!', ToastAndroid.SHORT);
-                this.countBack += 1;
+                this.setState({
+                    countBack: this.state.countBack + 1
+                })
             } else {
                 BackHandler.exitApp();
             }
@@ -215,7 +226,9 @@ class AppWithNavigationState extends Component {
             // )
         } else {
             dispatch({ type: 'Navigation/BACK' });
-            this.countBack = 0;
+            this.setState({
+                countBack: 0
+            })
         }
         return true;
     }

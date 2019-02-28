@@ -16,7 +16,7 @@ class Home extends Component {
         this.renderProductList = this.renderProductList.bind(this);
         this.getAllProducts = this.getAllProducts.bind(this);
         this.renderBestSellProducts = this.renderBestSellProducts.bind(this);
-        this.PopUpHandler = new Animated.Value(0);
+        this.PopUpHotLine= new Animated.Value(0);
     }
 
     componentWillMount() {
@@ -28,19 +28,19 @@ class Home extends Component {
         this.renderProductList();
         this.renderBestSellProducts();
         this.getCartItems();
-        this.StartPopUpHandlerFunction();
+        this.StartPopUpHotLineFunction();
     }
 
-    StartPopUpHandlerFunction() {
-        this.PopUpHandler.setValue(0.3)
+    StartPopUpHotLineFunction() {
+        this.PopUpHotLine.setValue(0.3)
 
         Animated.spring(
-            this.PopUpHandler,
+            this.PopUpHotLine,
             {
                 toValue: 1,
                 friction: 1
             }
-        ).start(() => this.StartPopUpHandlerFunction())
+        ).start(() => this.StartPopUpHotLineFunction())
     }
 
     getCartItems = async () => {
@@ -125,7 +125,7 @@ class Home extends Component {
                 <Animated.View
                     style={{
                         transform: [{
-                            scale: this.PopUpHandler
+                            scale: this.PopUpHotLine
                         }]
                     }}>
                     {this.props.children}
