@@ -397,13 +397,22 @@ class Product extends Component {
                                         <Ionicons name='ios-pin' size={20} />
                                         <Text style={{ marginHorizontal: 10 }}>
                                             <Text style={{ fontWeight: '500' }}>Trụ sở chính: </Text>
-                                            Tầng 5, 614-616-618 3 Tháng 2, Phường 14, Quận 10, TP.HCM</Text>
+                                            Tầng 5, 614-616-618 3 Tháng 2, Phường 14, Quận 10, TP.HCM
+                                            </Text>
                                     </View>
                                     <View style={{ flex: 1, flexDirection: 'row' }}>
                                         <Ionicons name='ios-pin' size={20} />
                                         <Text style={{ marginHorizontal: 10 }}>
                                             <Text style={{ fontWeight: '500' }}>CN chợ Hoà Bình: </Text>
-                                            59 Nghĩa Thục, Phường 05, Quận 05, TP.HCM</Text>
+                                            59 Nghĩa Thục, Phường 05, Quận 05, TP.HCM
+                                            </Text>
+                                    </View>
+                                    <View style={{ flex: 1, flexDirection: 'row' }}>
+                                        <Ionicons name='ios-megaphone' size={20} />
+                                        <Text style={{ marginHorizontal: 10 }}>
+                                            <Text style={{ fontWeight: '500' }}>HOTLINE: </Text>
+                                            <Text style={{ fontWeight: '500', color: '#F00' }}>1900 6037</Text>
+                                        </Text>
                                     </View>
                                 </View>
                             </Body>
