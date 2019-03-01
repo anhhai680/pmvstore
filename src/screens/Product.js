@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, ActivityIndicator, Modal, Alert } from 'react-native';
 import { connect } from 'react-redux';
-import { Container, Body, Content, Text, Card, CardItem } from 'native-base';
+import { Container, Body, Content, Text, Card, CardItem, Left } from 'native-base';
 import * as productCom from '../components/product/';
 import * as cart from '../components/cart';
 import { ProductGrid } from '../components/product';
@@ -388,19 +388,23 @@ class Product extends Component {
                     </Card>
                     <Card>
                         <CardItem header>
-                            <Text>Quyền lợi khách hàng</Text>
+                            <Text>Thông tin liên hệ</Text>
                         </CardItem>
                         <CardItem>
                             <Body>
-                                <View style={styles.view_content}>
-                                    <Ionicons name='ios-checkmark-circle' size={30} color='#00D700'
-                                        style={styles.marginRightIcons}></Ionicons>
-                                    <Text>ABC 1</Text>
-                                </View>
-                                <View style={styles.view_content}>
-                                    <Ionicons name='ios-checkmark-circle' size={30} color='#00D700'
-                                        style={styles.marginRightIcons}></Ionicons>
-                                    <Text>ABC 2</Text>
+                                <View style={{ flex: 1, justifyContent: 'center' }}>
+                                    <View style={{ flex: 1, flexDirection: 'row' }}>
+                                        <Ionicons name='ios-pin' size={20} />
+                                        <Text style={{ marginHorizontal: 10 }}>
+                                            <Text style={{ fontWeight: '500' }}>Trụ sở chính: </Text>
+                                            Tầng 5, 614-616-618 3 Tháng 2, Phường 14, Quận 10, TP.HCM</Text>
+                                    </View>
+                                    <View style={{ flex: 1, flexDirection: 'row' }}>
+                                        <Ionicons name='ios-pin' size={20} />
+                                        <Text style={{ marginHorizontal: 10 }}>
+                                            <Text style={{ fontWeight: '500' }}>CN chợ Hoà Bình: </Text>
+                                            59 Nghĩa Thục, Phường 05, Quận 05, TP.HCM</Text>
+                                    </View>
                                 </View>
                             </Body>
                         </CardItem>
@@ -426,7 +430,7 @@ class Product extends Component {
                         <cart.quantityProduct value={this.state.quantity} quantityValueChange={this.quantityValueChange} />
                     </View>
                 </KeyboardAvoidingView> */}
-            </ Container>
+            </ Container >
         );
     }
 }
@@ -459,11 +463,6 @@ const styles = StyleSheet.create({
         fontSize: 14,
         fontWeight: 'bold',
         color: '#FF8000',
-    },
-    view_content: {
-        flex: 1,
-        flexDirection: 'row',
-        alignItems: 'center'
     },
     marginRightIcons: {
         marginRight: 10
