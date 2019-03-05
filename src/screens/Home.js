@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, ActivityIndicator, TouchableOpacity, Linking, Animated } from 'react-native';
+import { StyleSheet, View, ActivityIndicator, TouchableOpacity, Linking, Animated, Easing } from 'react-native';
 import { connect } from 'react-redux';
 import { Container, Header, Content, Text, Card, CardItem } from 'native-base';
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -16,7 +16,9 @@ class Home extends Component {
         this.renderProductList = this.renderProductList.bind(this);
         this.getAllProducts = this.getAllProducts.bind(this);
         this.renderBestSellProducts = this.renderBestSellProducts.bind(this);
-        this.PopUpHotLine= new Animated.Value(0);
+        this.PopUpHotLine = new Animated.Value(0);
+        this.SizeHWHotLine = new Animated.Value(0);
+        this.SizeLBHotLine = new Animated.Value(0);
     }
 
     componentWillMount() {
@@ -29,18 +31,41 @@ class Home extends Component {
         this.renderBestSellProducts();
         this.getCartItems();
         this.StartPopUpHotLineFunction();
+        this.SizeHeigthWidthFunction();
+        this.SizeLeftBottomFunction();
     }
 
     StartPopUpHotLineFunction() {
-        this.PopUpHotLine.setValue(0.3)
-
-        Animated.spring(
-            this.PopUpHotLine,
-            {
+        this.PopUpHotLine.setValue(0);
+        Animated.timing(
+            this.PopUpHotLine, {
                 toValue: 1,
-                friction: 1
-            }
+                duration: 500,
+                easing: Easing.linear
+            },
         ).start(() => this.StartPopUpHotLineFunction())
+    }
+
+    SizeHeigthWidthFunction() {
+        this.SizeHWHotLine.setValue(0);
+        Animated.timing(
+            this.SizeHWHotLine, {
+                toValue: 1,
+                duration: 500,
+                easing: Easing.linear
+            }
+        ).start(() => this.SizeHeigthWidthFunction())
+    }
+
+    SizeLeftBottomFunction() {
+        this.SizeLBHotLine.setValue(0);
+        Animated.timing(
+            this.SizeLBHotLine, {
+                toValue: 1,
+                duration: 500,
+                easing: Easing.linear
+            }
+        ).start(() => this.SizeLeftBottomFunction())
     }
 
     getCartItems = async () => {
@@ -120,28 +145,47 @@ class Home extends Component {
     }
 
     renderPopUpHotLine() {
+        const spin = this.PopUpHotLine.interpolate({
+            inputRange: [0, 0.5, 1],
+            outputRange: ['0deg', '50deg', '0deg']
+        })
+        const sizeHW = this.SizeHWHotLine.interpolate({
+            inputRange: [0, 0.5, 1],
+            outputRange: [60, 70, 60]
+        })
+        const sizeLB = this.SizeLBHotLine.interpolate({
+            inputRange: [0, 0.5, 1],
+            outputRange: [10, 0, 10]
+        })
         return (
-            <View style={styles.buttonHotLine}>
-                <Animated.View
-                    style={{
-                        transform: [{
-                            scale: this.PopUpHotLine
-                        }]
-                    }}>
-                    {this.props.children}
-                    <TouchableOpacity onPress={() => {
-                        Linking.canOpenURL('tel:19006037').then(supported => {
-                            if (!supported) {
-                                console.log("Thiết bị của bạn không hỗ trợ cuộc gọi!");
-                            } else {
-                                return Linking.openURL('tel:19006037');
-                            }
-                        }).catch(err => console.error('An error occurred', err));
-                    }} >
-                        <Ionicons name='ios-call' size={50} style={{ color: '#FFF' }} />
-                    </TouchableOpacity>
-                </Animated.View>
-            </View>
+            <Animated.View
+                style={[styles.viewButtonHL, {
+                    height: sizeHW,
+                    width: sizeHW,
+                    left: sizeLB,
+                    bottom: sizeLB,
+                }]}>
+                <View style={styles.buttonHotLine}>
+                    <Animated.View
+                        style={{
+                            transform: [{
+                                rotate: spin
+                            }]
+                        }}>
+                        <TouchableOpacity style={styles.backgroundIcon} onPress={() => {
+                            Linking.canOpenURL('tel:19006037').then(supported => {
+                                if (!supported) {
+                                    console.log("Thiết bị của bạn không hỗ trợ cuộc gọi!");
+                                } else {
+                                    return Linking.openURL('tel:19006037');
+                                }
+                            }).catch(err => console.error('An error occurred', err));
+                        }} >
+                            <Ionicons name='ios-call' size={35} style={{ color: '#F79620' }} />
+                        </TouchableOpacity>
+                    </Animated.View>
+                </View >
+            </Animated.View>
         );
     }
 
@@ -230,18 +274,34 @@ const styles = StyleSheet.create({
         right: 0,
         marginTop: 10
     },
+    viewButtonHL: {
+        position: 'absolute',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#FEF5EB',
+        borderWidth: 1,
+        borderColor: '#F79620',
+        borderRadius: 30,
+    },
     buttonHotLine: {
         position: 'absolute',
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: '#F79620',
+        borderColor: '#F79620',
         borderRadius: 30,
         borderWidth: 1,
-        borderColor: '#F79620',
         height: 60,
         width: 60,
-        left: 10,
-        bottom: 10,
+    },
+    backgroundIcon: {
+        backgroundColor: '#FFF',
+        borderColor: '#FFF',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 30,
+        height: 40,
+        width: 40,
     },
     textInput: {
         flex: 1,
