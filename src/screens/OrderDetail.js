@@ -15,7 +15,7 @@ export default class OrderDetail extends Component {
                 <CardItem header>
                     <View>
                         <Text>Thông tin đơn hàng (#{order.id})</Text>
-                        <Text style={styles.datecreateText}>Ngày đặt: {dateformat(new Date(order.date_created), "longDate")}</Text>
+                        <Text style={styles.datecreateText}>Ngày đặt: {dateformat(new Date(order.date_created_gmt), 'dd/mm/yyyy HH:MM')}</Text>
                     </View>
                     <Right>
                         <Text style={styles.statusOrder}>{

@@ -25,7 +25,7 @@ export default class ListOrder extends Component {
                                     <Text style={styles.headerText}>Đơn hàng: #{item.id}
                                         {/* {item.order_key.replace('wc_order_', '').toUpperCase()} */}
                                     </Text>
-                                    <Text style={styles.datecreateText}>Ngày đặt: {dateformat(new Date(item.date_created), "longDate")}</Text>
+                                    <Text style={styles.datecreateText}>Ngày đặt: {dateformat(new Date(item.date_created), 'dd/mm/yyyy HH:MM')}</Text>
                                 </View>
                                 <View style={{ width: '25%', alignSelf: 'center' }} >
                                     <Text style={styles.headerText}>{
