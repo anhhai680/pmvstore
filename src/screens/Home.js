@@ -51,7 +51,7 @@ class Home extends Component {
         Animated.timing(
             this.SizeHWHotLine, {
                 toValue: 1,
-                duration: 500,
+                duration: 1000,
                 easing: Easing.linear
             }
         ).start(() => this.SizeHeigthWidthFunction())
@@ -62,7 +62,7 @@ class Home extends Component {
         Animated.timing(
             this.SizeLBHotLine, {
                 toValue: 1,
-                duration: 500,
+                duration: 1000,
                 easing: Easing.linear
             }
         ).start(() => this.SizeLeftBottomFunction())
@@ -151,7 +151,7 @@ class Home extends Component {
         })
         const sizeHW = this.SizeHWHotLine.interpolate({
             inputRange: [0, 0.5, 1],
-            outputRange: [60, 70, 60]
+            outputRange: [50, 65, 50]
         })
         const sizeLB = this.SizeLBHotLine.interpolate({
             inputRange: [0, 0.5, 1],
@@ -181,7 +181,7 @@ class Home extends Component {
                                 }
                             }).catch(err => console.error('An error occurred', err));
                         }} >
-                            <Ionicons name='ios-call' size={35} style={{ color: '#F79620' }} />
+                            <Ionicons name='ios-call' size={40} style={{ color: '#FFF' }} />
                         </TouchableOpacity>
                     </Animated.View>
                 </View >
@@ -268,19 +268,11 @@ const styles = StyleSheet.create({
     iconMenu: {
         marginTop: 10,
     },
-    iconSearch: {
-        position: 'absolute',
-        marginRight: 15,
-        right: 0,
-        marginTop: 10
-    },
     viewButtonHL: {
         position: 'absolute',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#FEF5EB',
-        borderWidth: 1,
-        borderColor: '#F79620',
+        backgroundColor: '#FBCD95',
         borderRadius: 30,
     },
     buttonHotLine: {
@@ -288,32 +280,17 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: '#F79620',
-        borderColor: '#F79620',
         borderRadius: 30,
-        borderWidth: 1,
-        height: 60,
-        width: 60,
+        height: 50,
+        width: 50,
     },
     backgroundIcon: {
-        backgroundColor: '#FFF',
-        borderColor: '#FFF',
+        backgroundColor: '#F79620',
+        borderColor: '#F79620',
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 30,
-        height: 40,
-        width: 40,
-    },
-    textInput: {
-        flex: 1,
-        borderRadius: 2,
-        borderWidth: 1,
-        borderColor: '#FFF',
-        backgroundColor: '#FFF',
-        textAlign: 'left',
-        paddingLeft: 10,
-        paddingTop: 10,
-        paddingRight: 40,
-        margin: 10,
-        color: '#9A9A9A',
+        height: 50,
+        width: 50,
     },
 });

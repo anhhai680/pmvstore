@@ -26,11 +26,14 @@ export default class productGrid extends Component {
                     <Image source={{ uri: item.images[0].src }} style={styles.itemImage} resizeMode="contain" />
                     <View style={{ maxWidth: 150 }}>
                         <Text style={styles.itemText}>{item.name}</Text>
-                        <NumberFormat value={item.price} displayType={'text'} thousandSeparator={true}
-                            renderText={
-                                value => <Text style={styles.itemPrice}>{value}đ</Text>
-                            }
-                        />
+                        <View style={item.regular_price ? null : { alignItems: 'center' }}>
+                            <NumberFormat
+                                value={item.price} displayType={'text'} thousandSeparator={true}
+                                renderText={
+                                    value => <Text style={styles.itemPrice}>{value}đ</Text>
+                                }
+                            />
+                        </View>
                         {
                             item.regular_price ?
                                 <View style={{ flexDirection: 'row' }}>
