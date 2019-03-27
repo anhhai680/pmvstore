@@ -7,6 +7,7 @@ import BannerSlider from './Banner';
 import { ProductList, ProductGrid, FindProductButton } from '../components/product';
 import { getProducts, productsRefreshing } from '../redux/actions/homeAction';
 import { fetchingCartItem } from '../redux/actions/cartAction';
+import PopUpHotLine from '../components/popUpHotLine';
 
 class Home extends Component {
 
@@ -16,9 +17,6 @@ class Home extends Component {
         this.renderProductList = this.renderProductList.bind(this);
         this.getAllProducts = this.getAllProducts.bind(this);
         this.renderBestSellProducts = this.renderBestSellProducts.bind(this);
-        this.PopUpHotLine = new Animated.Value(0);
-        this.SizeHWHotLine = new Animated.Value(0);
-        this.SizeLBHotLine = new Animated.Value(0);
     }
 
     componentWillMount() {
@@ -30,42 +28,6 @@ class Home extends Component {
         this.renderProductList();
         this.renderBestSellProducts();
         this.getCartItems();
-        this.StartPopUpHotLineFunction();
-        this.SizeHeigthWidthFunction();
-        this.SizeLeftBottomFunction();
-    }
-
-    StartPopUpHotLineFunction() {
-        this.PopUpHotLine.setValue(0);
-        Animated.timing(
-            this.PopUpHotLine, {
-                toValue: 1,
-                duration: 500,
-                easing: Easing.linear
-            },
-        ).start(() => this.StartPopUpHotLineFunction())
-    }
-
-    SizeHeigthWidthFunction() {
-        this.SizeHWHotLine.setValue(0);
-        Animated.timing(
-            this.SizeHWHotLine, {
-                toValue: 1,
-                duration: 1000,
-                easing: Easing.linear
-            }
-        ).start(() => this.SizeHeigthWidthFunction())
-    }
-
-    SizeLeftBottomFunction() {
-        this.SizeLBHotLine.setValue(0);
-        Animated.timing(
-            this.SizeLBHotLine, {
-                toValue: 1,
-                duration: 1000,
-                easing: Easing.linear
-            }
-        ).start(() => this.SizeLeftBottomFunction())
     }
 
     getCartItems = async () => {
@@ -144,51 +106,6 @@ class Home extends Component {
         );
     }
 
-    renderPopUpHotLine() {
-        const spin = this.PopUpHotLine.interpolate({
-            inputRange: [0, 0.5, 1],
-            outputRange: ['0deg', '50deg', '0deg']
-        })
-        const sizeHW = this.SizeHWHotLine.interpolate({
-            inputRange: [0, 0.5, 1],
-            outputRange: [50, 65, 50]
-        })
-        const sizeLB = this.SizeLBHotLine.interpolate({
-            inputRange: [0, 0.5, 1],
-            outputRange: [10, 0, 10]
-        })
-        return (
-            <Animated.View
-                style={[styles.viewButtonHL, {
-                    height: sizeHW,
-                    width: sizeHW,
-                    left: sizeLB,
-                    bottom: sizeLB,
-                }]}>
-                <View style={styles.buttonHotLine}>
-                    <Animated.View
-                        style={{
-                            transform: [{
-                                rotate: spin
-                            }]
-                        }}>
-                        <TouchableOpacity style={styles.backgroundIcon} onPress={() => {
-                            Linking.canOpenURL('tel:19006037').then(supported => {
-                                if (!supported) {
-                                    console.log("Thiết bị của bạn không hỗ trợ cuộc gọi!");
-                                } else {
-                                    return Linking.openURL('tel:19006037');
-                                }
-                            }).catch(err => console.error('An error occurred', err));
-                        }} >
-                            <Ionicons name='ios-call' size={40} style={{ color: '#FFF' }} />
-                        </TouchableOpacity>
-                    </Animated.View>
-                </View >
-            </Animated.View>
-        );
-    }
-
     renderHeaderMenu() {
         return (
             <View style={{ flex: 1, flexDirection: 'row' }}>
@@ -236,7 +153,7 @@ class Home extends Component {
                     </Card>
                     {this.renderProductList()}
                 </Content>
-                {this.renderPopUpHotLine()}
+                <PopUpHotLine />
             </Container>
         );
     }
@@ -267,30 +184,5 @@ const styles = StyleSheet.create({
     },
     iconMenu: {
         marginTop: 10,
-    },
-    viewButtonHL: {
-        position: 'absolute',
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#FBCD95',
-        borderRadius: 30,
-    },
-    buttonHotLine: {
-        position: 'absolute',
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#F79620',
-        borderRadius: 30,
-        height: 50,
-        width: 50,
-    },
-    backgroundIcon: {
-        backgroundColor: '#F79620',
-        borderColor: '#F79620',
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: 30,
-        height: 50,
-        width: 50,
     },
 });
